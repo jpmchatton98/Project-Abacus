@@ -1,5 +1,4 @@
-import java.awt.GridLayout;
-import java.awt.Label;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -17,7 +16,8 @@ public class Driver
 	static JFrame window; // GUI
 
 	protected static JTextField equationInput; // Text field for inputting equations
-	protected static Label[] historyLabels; // Text labels for history
+	protected static Label[][] historyLabels; // Text labels for history
+	protected static Button submit; // Submit button
 
 	protected static ArrayList<String> history; // ArrayList of historical equations
 
@@ -26,21 +26,30 @@ public class Driver
 		history = new ArrayList<String>();
 
 		window = new JFrame();
-		window.setLayout(new GridLayout(HISTORY_LEN + 1, 1));
+		window.setLayout(new GridLayout(HISTORY_LEN + 1, 2));
 
 		equationInput = new JTextField();
 		equationInput.addActionListener(new equationListener());
 
+		submit = new Button("Submit");
+		submit.addActionListener(new equationListener());
+
 		// Initialize ten history labels
-		historyLabels = new Label[HISTORY_LEN];
+		historyLabels = new Label[HISTORY_LEN][2];
 		for(int i = 0; i < HISTORY_LEN; i++)
 		{
-			historyLabels[i] = new Label();
-			historyLabels[i].addMouseListener(new historyFill()); // Mouse listener if the label is clicked
-			window.add(historyLabels[i]);
+			historyLabels[i][0] = new Label(); // Historical equation
+			historyLabels[i][0].addMouseListener(new historyFill());
+
+			historyLabels[i][1] = new Label(); // Historical answer
+			historyLabels[i][1].addMouseListener(new historyFill());
+
+			window.add(historyLabels[i][0]);
+			window.add(historyLabels[i][1]);
 		}
 
 		window.add(equationInput);
+		window.add(submit);
 
 		window.setTitle("Project Abacus");
 		window.setSize(1000, 700);
@@ -56,7 +65,6 @@ public class Driver
 			String equation = equationInput.getText();
 
 			history.add(equation);
-			System.out.println(history);
 			if(history.size() > HISTORY_LEN)
 			{
 				history.remove(0);
@@ -66,11 +74,11 @@ public class Driver
 			{
 				if(i < history.size())
 				{
-					historyLabels[j].setText(history.get(i));
+					historyLabels[j][0].setText(history.get(i));
 				}
 				else
 				{
-					historyLabels[j].setText("");
+					historyLabels[j][0].setText("");
 				}
 			}
 		}

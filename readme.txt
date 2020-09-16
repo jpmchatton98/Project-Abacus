@@ -1,0 +1,1 @@
+Project Abacus is an interpretive calculator in the vein of programs like Wolfram Alpha or Desmos, created as the senior project of Jonathan McHatton.

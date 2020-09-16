@@ -5,8 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 // Main class that drives the function
 public class Driver
@@ -17,21 +16,20 @@ public class Driver
 
 	protected static JTextField equationInput; // Text field for inputting equations
 	protected static Label[][] historyLabels; // Text labels for history
-	protected static Button submit; // Submit button
+	protected static JButton submit; // Submit button
 
 	protected static ArrayList<String> history; // ArrayList of historical equations
 
-	public static void main(String[] args)
+
+
+	/*public static void main(String[] args)
 	{
-		history = new ArrayList<String>();
+		history = new ArrayList<>();
 
 		window = new JFrame();
 		window.setLayout(new GridLayout(HISTORY_LEN + 1, 2));
 
-		equationInput = new JTextField();
 		equationInput.addActionListener(new equationListener());
-
-		submit = new Button("Submit");
 		submit.addActionListener(new equationListener());
 
 		// Initialize ten history labels
@@ -55,7 +53,7 @@ public class Driver
 		window.setSize(1000, 700);
 		window.setVisible(true);
 		window.setResizable(false);
-	}
+	}*/
 
 	// Performs equation submission functionality
 	private static class equationListener implements ActionListener

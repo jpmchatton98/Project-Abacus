@@ -1,5 +1,3 @@
-package jpmchatton98;
-
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -11,41 +9,46 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-public class Window
+// Main class that drives the function
+public class Driver
 {
-	static JFrame window;
+	static final int HISTORY_LEN = 10;
 
-	protected static JTextField equationInput;
-	protected static Label[] historyLabels;
+	static JFrame window; // GUI
 
-	protected static ArrayList<String> history;
+	protected static JTextField equationInput; // Text field for inputting equations
+	protected static Label[] historyLabels; // Text labels for history
+
+	protected static ArrayList<String> history; // ArrayList of historical equations
 
 	public static void main(String[] args)
 	{
 		history = new ArrayList<String>();
 
 		window = new JFrame();
-		window.setLayout(new GridLayout(10, 1));
+		window.setLayout(new GridLayout(HISTORY_LEN + 1, 1));
 
 		equationInput = new JTextField();
 		equationInput.addActionListener(new equationListener());
 
-		historyLabels = new Label[9];
-		for(int i = 0; i < 9; i++)
+		// Initialize ten history labels
+		historyLabels = new Label[HISTORY_LEN];
+		for(int i = 0; i < HISTORY_LEN; i++)
 		{
 			historyLabels[i] = new Label();
-			historyLabels[i].addMouseListener(new historyFill());
+			historyLabels[i].addMouseListener(new historyFill()); // Mouse listener if the label is clicked
 			window.add(historyLabels[i]);
 		}
 
 		window.add(equationInput);
 
 		window.setTitle("Project Abacus");
-		window.setSize(500, 700);
+		window.setSize(1000, 700);
 		window.setVisible(true);
 		window.setResizable(false);
 	}
 
+	// Performs equation submission functionality
 	private static class equationListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -54,12 +57,12 @@ public class Window
 
 			history.add(equation);
 			System.out.println(history);
-			if(history.size() > 9)
+			if(history.size() > HISTORY_LEN)
 			{
 				history.remove(0);
 			}
 
-			for(int i = 0, j = 9 - history.size(); j < 9; i++, j++)
+			for(int i = 0, j = HISTORY_LEN - history.size(); j < HISTORY_LEN; i++, j++)
 			{
 				if(i < history.size())
 				{
@@ -73,6 +76,7 @@ public class Window
 		}
 	}
 
+	// If a history label is clicked, make the current equation that historical equation
 	private static class historyFill implements MouseListener
 	{
 		public void mouseClicked(MouseEvent e)

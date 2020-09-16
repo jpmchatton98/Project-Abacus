@@ -1,4 +1,7 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
 
 public class Window
 {
@@ -29,6 +32,8 @@ public class Window
 	public JLabel answer8;
 	public JLabel answer9;
 
+	public JLabel[] history;
+
 	public static void main(String[] args)
 	{
 		JFrame frame = new JFrame("testForm");
@@ -40,33 +45,34 @@ public class Window
 		frame.setVisible(true);
 	}
 
-	/*private class equationListener implements ActionListener
+	private class equationListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
 		{
 			String equation = equationInput.getText();
 
-			history.add(equation);
-			if(history.size() > HISTORY_LEN)
+			for(int i = 0; i < 10; i++)
 			{
-				history.remove(0);
-			}
+				try
+				{
+					Object instance = getClass().getDeclaredField("history" + i).get(this);
+					Method m = instance.getClass().getMethod("split", String.class);
 
-			for(int i = 0, j = HISTORY_LEN - history.size(); j < HISTORY_LEN; i++, j++)
-			{
-				if(i < history.size())
-				{
-					historyLabels[j][0].setText(history.get(i));
+					Object returnValue = m.invoke(instance, ";");
+					if(returnValue instanceof JLabel)
+					{
+						System.out.println((JLabel)returnValue);
+					}
 				}
-				else
+				catch(Exception exc)
 				{
-					historyLabels[j][0].setText("");
+					exc.printStackTrace();
 				}
 			}
 		}
 	}
 
-	// If a history label is clicked, make the current equation that historical equation
+	/*// If a history label is clicked, make the current equation that historical equation
 	private class historyFill implements MouseListener
 	{
 		public void mouseClicked(MouseEvent e)
@@ -82,4 +88,3 @@ public class Window
 		public void mouseExited(MouseEvent e){}
 	}*/
 }
-

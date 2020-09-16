@@ -27,7 +27,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.testForm">
+  <component name="RunManager" selected="Application.Window">
     <configuration name="Driver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Driver" />
       <module name="abacus" />
@@ -35,8 +35,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="testForm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="testForm" />
+    <configuration name="Window" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Window" />
       <module name="abacus" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -44,7 +44,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.testForm" />
+        <item itemvalue="Application.Window" />
         <item itemvalue="Application.Driver" />
       </list>
     </recent_temporary>
@@ -65,22 +65,30 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="412" y="154" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1600279095121" />
-    <state width="1323" height="198" key="GridCell.Tab.0.bottom" timestamp="1600279456632">
+    <state x="25" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1600280328827">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="198" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1600279456632" />
-    <state width="1323" height="198" key="GridCell.Tab.0.center" timestamp="1600279456632">
+    <state x="25" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1600280328827" />
+    <state width="1323" height="198" key="GridCell.Tab.0.bottom" timestamp="1600280514783">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="198" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1600279456632" />
-    <state width="1323" height="198" key="GridCell.Tab.0.left" timestamp="1600279456632">
+    <state width="1323" height="198" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1600280514783" />
+    <state width="1323" height="198" key="GridCell.Tab.0.center" timestamp="1600280514783">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="198" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1600279456632" />
-    <state width="1323" height="198" key="GridCell.Tab.0.right" timestamp="1600279456632">
+    <state width="1323" height="198" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1600280514783" />
+    <state width="1323" height="198" key="GridCell.Tab.0.left" timestamp="1600280514783">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="198" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1600279456632" />
+    <state width="1323" height="198" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1600280514783" />
+    <state width="1323" height="198" key="GridCell.Tab.0.right" timestamp="1600280514783">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="198" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1600280514783" />
+    <state x="562" y="158" key="UIDesigner.ListEditorDialog" timestamp="1600279799350">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="562" y="158" key="UIDesigner.ListEditorDialog/0.0.1366.728@0.0.1366.728" timestamp="1600279799350" />
     <state x="65" y="0" key="new project wizard" timestamp="1600277448683">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

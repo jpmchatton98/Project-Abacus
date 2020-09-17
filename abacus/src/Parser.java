@@ -7,11 +7,13 @@ public class Parser
 	// EquationPart objects that can be compiled into the answer.
 	public PriorityQueue<EquationPart> parse(String equation)
 	{
-		// Replace all mutli-character strings with single characters
+		// Replace all multi-character strings with single characters
 
 		equation = equation.replace("sqrt", "√");
 		equation = equation.replace("cbrt", "∛");
 		equation = equation.replace("pi", "π");
+		equation = equation.replace("log", "L");
+		equation = equation.replace("logn", "Ł");
 
 		// Trigonometric function logic:
 		//      - Basic functions (sin, cos, tan) are lowercase

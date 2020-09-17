@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 // This class handles all of the UI functionality and contains the main() function
@@ -12,13 +9,11 @@ public class Window
 	private static final int HISTORY_LEN = 10; // Constant for length of the visible history
 
 	private static JTextField equationInput; // Equation input text field
-	private static JButton submit; // Submit button with a ˄ as its text
-	private static JPanel window;
 
-	public static JLabel[] historyLabels; // Array of all history labels
-	public static JLabel[] answerLabels; // Array of all answer labels
+	private static JLabel[] historyLabels; // Array of all history labels
+	private static JLabel[] answerLabels; // Array of all answer labels
 
-	public static ArrayList<String> history; // ArrayList containing raw historical equations in string form
+	private static ArrayList<String> history; // ArrayList containing raw historical equations in string form
 
 	public static void main(String[] args)
 	{
@@ -28,7 +23,7 @@ public class Window
 		historyLabels = new JLabel[HISTORY_LEN];
 		answerLabels = new JLabel[HISTORY_LEN];
 
-		window = new JPanel(new GridBagLayout());
+		JPanel window = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
 		// Initialize all history and answer labels and print them to the screen
@@ -64,7 +59,8 @@ public class Window
 		window.add(equationInput, c);
 
 		// Initialize submit button and print it to the screen
-		submit = new JButton("˄");
+		// Submit button with a ˄ as its text
+		JButton submit = new JButton("˄");
 		submit.addActionListener(new equationListener());
 		c.gridx = 1;
 		c.fill = 0;

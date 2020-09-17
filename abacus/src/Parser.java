@@ -18,4 +18,55 @@ public class Parser
 
 		return null;
 	}
+
+	// Takes in a queue of EquationPart objects and compiles them into an answer
+	public double compileAnswer(PriorityQueue<EquationPart> parts)
+	{
+		double answer = 0;
+
+		while(parts.peek() != null)
+		{
+			EquationPart part = parts.remove();
+
+			switch(part.getFunction()) // Determine which function to do and do it
+			{
+				case '+': // Add
+				{
+					answer += part.getNumber();
+					break;
+				}
+				case '-': // Subtract
+				{
+					answer -= part.getNumber();
+					break;
+				}
+				case '*': // Multiply
+				{
+					answer *= part.getNumber();
+					break;
+				}
+				case '/': // Divide
+				{
+					answer /= part.getNumber();
+					break;
+				}
+				case '^': // Exponent
+				{
+					answer = Math.pow(answer, part.getNumber());
+					break;
+				}
+				case '%': // Modulus
+				{
+					answer %= part.getNumber();
+					break;
+				}
+				default: // Invalid
+				{
+					System.out.println("Invalid function");
+				}
+			}
+		}
+
+		return answer;
+	}
 }

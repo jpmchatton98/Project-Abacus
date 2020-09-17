@@ -16,16 +16,16 @@ public class EquationPart
 	{
 		return number;
 	}
-	public void setNumber(double number)
+	public void   setNumber(double number)
 	{
 		this.number = number;
 	}
 
-	public char getFunction()
+	public char   getFunction()
 	{
 		return function;
 	}
-	public void setFunction(char function)
+	public void   setFunction(char function)
 	{
 		this.function = function;
 	}

@@ -27,7 +27,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.TestWindow">
+  <component name="RunManager" selected="Application.Window">
     <configuration name="Driver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Driver" />
       <module name="abacus" />
@@ -51,7 +51,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestWindow" />
         <item itemvalue="Application.Window" />
         <item itemvalue="Application.Driver" />
       </list>
@@ -77,22 +76,38 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="25" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1600280328827" />
-    <state width="1323" height="53" key="GridCell.Tab.0.bottom" timestamp="1600361995415">
+    <state width="1323" height="112" key="GridCell.Tab.0.bottom" timestamp="1600718613055">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="53" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1600361995415" />
-    <state width="1323" height="53" key="GridCell.Tab.0.center" timestamp="1600361995415">
+    <state width="1323" height="112" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1600718613055" />
+    <state width="1323" height="112" key="GridCell.Tab.0.center" timestamp="1600718613055">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="53" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1600361995415" />
-    <state width="1323" height="53" key="GridCell.Tab.0.left" timestamp="1600361995415">
+    <state width="1323" height="112" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1600718613055" />
+    <state width="1323" height="112" key="GridCell.Tab.0.left" timestamp="1600718613055">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="53" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1600361995415" />
-    <state width="1323" height="53" key="GridCell.Tab.0.right" timestamp="1600361995415">
+    <state width="1323" height="112" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1600718613055" />
+    <state width="1323" height="112" key="GridCell.Tab.0.right" timestamp="1600718613055">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="53" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1600361995415" />
+    <state width="1323" height="112" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1600718613055" />
+    <state width="1323" height="248" key="GridCell.Tab.1.bottom" timestamp="1600718297904">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="248" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1600718297904" />
+    <state width="1323" height="248" key="GridCell.Tab.1.center" timestamp="1600718297904">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="248" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1600718297904" />
+    <state width="1323" height="248" key="GridCell.Tab.1.left" timestamp="1600718297904">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="248" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1600718297904" />
+    <state width="1323" height="248" key="GridCell.Tab.1.right" timestamp="1600718297904">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="248" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1600718297904" />
     <state x="562" y="158" key="UIDesigner.ListEditorDialog" timestamp="1600279799350">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

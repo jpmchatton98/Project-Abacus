@@ -15,8 +15,11 @@ public class Window
 
 	private static ArrayList<String> history; // ArrayList containing raw historical equations in string form
 
+	private static Parser parser;
+
 	public static void main(String[] args)
 	{
+		parser = new Parser();
 		history = new ArrayList<>(); // Initialize history ArrayList
 
 		// Initialize label arrays
@@ -93,7 +96,7 @@ public class Window
 				if(i < history.size())
 				{
 					historyLabels[j].setText(history.get(i));
-					// answerLabels[j].setText(history get answer)
+					answerLabels[j].setText(parser.parse(historyLabels[j].getText()) + "");
 				}
 				else
 				{

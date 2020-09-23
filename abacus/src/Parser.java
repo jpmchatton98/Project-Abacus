@@ -50,32 +50,62 @@ public class Parser
 		// Change the equation string to an array
 		char[] equationArray = equation.toCharArray();
 		String curr = "";
-		char finalFunction = ' ';
+		String function = "";
 
-		// Core parsing loop
-		for (char c : equationArray)
+		if(equationArray[0] != '-')
 		{
-			if (isNumberOrPeriod(c))
+			// Core parsing loop
+			for (int i = 0; i < equationArray.length; i++)
 			{
-				curr += c;
-			}
-			else
-			{
-				finalFunction = c;
-				if (equationParts.size() > 0)
+				if (isNumberOrPeriod(equationArray[i]))
 				{
-					equationParts.add(new EquationPart(parseDouble(curr), c, equationParts.get(equationParts.size() - 1)));
-					equationParts.get(equationParts.size() - 2).setNext(equationParts.get(equationParts.size() - 1));
+					curr += equationArray[i];
 				}
 				else
 				{
-					equationParts.add(new EquationPart(parseDouble(curr), '+', null));
+					if (equationParts.size() > 0)
+					{
+						equationParts.add(new EquationPart(parseDouble(curr), function, equationParts.get(equationParts.size() - 1)));
+						equationParts.get(equationParts.size() - 2).setNext(equationParts.get(equationParts.size() - 1));
+					}
+					else
+					{
+						equationParts.add(new EquationPart(parseDouble(curr), "+", null));
+					}
+					curr = "";
+					function = equationArray[i] + "";
 				}
-				curr = "";
+			}
+		}
+		else
+		{
+			// Core parsing loop
+			for (int i = 1; i < equationArray.length; i++)
+			{
+				if (isNumberOrPeriod(equationArray[i]))
+				{
+					curr += equationArray[i];
+				}
+				else
+				{
+					if (equationParts.size() > 0)
+					{
+						equationParts.add(new EquationPart(parseDouble(curr), function, equationParts.get(equationParts.size() - 1)));
+						equationParts.get(equationParts.size() - 2).setNext(equationParts.get(equationParts.size() - 1));
+					}
+					else
+					{
+						equationParts.add(new EquationPart(parseDouble(curr), "-", null));
+					}
+					curr = "";
+					function = equationArray[i] + "";
+				}
 			}
 		}
 
-		equationParts.add(new EquationPart(parseDouble(curr), finalFunction, equationParts.get(equationParts.size() - 1)));
+
+
+		equationParts.add(new EquationPart(parseDouble(curr), function, equationParts.get(equationParts.size() - 1)));
 		equationParts.get(equationParts.size() - 2).setNext(equationParts.get(equationParts.size() - 1));
 
 		return compileEquation(equationParts);
@@ -90,35 +120,55 @@ public class Parser
 		{
 			switch(part.getFunction())
 			{
-				case '+':
+				case "+":
 				{
 					result += part.getNumber();
 					break;
 				}
-				case '-':
+				case "-":
 				{
 					result -= part.getNumber();
 					break;
 				}
-				case '*':
+				case "*":
 				{
 					result *= part.getNumber();
 					break;
 				}
-				case '/':
+				case "/":
 				{
 					result /= part.getNumber();
 					break;
 				}
-				case '^':
+				case "^":
 				{
 					result = Math.pow(result, part.getNumber());
 					break;
 				}
-				case '%':
+				case "%":
 				{
 					result %= part.getNumber();
 					break;
+				}
+				case "√":
+				{
+					result *= Math.sqrt(part.getNumber());
+				}
+				case "+√":
+				{
+					result += Math.sqrt(part.getNumber());
+				}
+				case "-√":
+				{
+					result -= Math.sqrt(part.getNumber());
+				}
+				case "*√":
+				{
+					result *= Math.sqrt(part.getNumber());
+				}
+				case "/√":
+				{
+					result /= Math.sqrt(part.getNumber());
 				}
 				default:
 				{

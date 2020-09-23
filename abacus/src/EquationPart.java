@@ -22,6 +22,13 @@ public class EquationPart
 		this.function = function;
 		this.prevPart = prevPart;
 	}
+	EquationPart(double number, String function, EquationPart prevPart, EquationPart nextPart)
+	{
+		this.number = number;
+		this.function = function;
+		this.prevPart = prevPart;
+		this.nextPart = nextPart;
+	}
 
 	public double getNumber()
 	{
@@ -48,6 +55,10 @@ public class EquationPart
 	public EquationPart next()
 	{
 		return nextPart;
+	}
+	public void setPrev(EquationPart part)
+	{
+		prevPart = part;
 	}
 	public void setNext(EquationPart part)
 	{

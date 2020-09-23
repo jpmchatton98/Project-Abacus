@@ -106,19 +106,28 @@ public class Parser
 			}
 		}
 
-		equationParts.add(new EquationPart(parseDouble(curr), function, equationParts.get(equationParts.size() - 1)));
-		equationParts.get(equationParts.size() - 2).setNext(equationParts.get(equationParts.size() - 1));
+		if(equationParts.size() < 1)
+		{
+			equationParts.add(new EquationPart(parseDouble(curr), function, equationParts.get(equationParts.size() - 1)));
+			equationParts.get(equationParts.size() - 2).setNext(equationParts.get(equationParts.size() - 1));
 
-		return compileEquation(equationParts);
+			return compileEquation(equationParts);
+		}
+		else
+		{
+			return parseDouble(curr);
+		}
+
+
 	}
 
 	private double compileEquation(ArrayList<EquationPart> equationParts)
 	{
 		EquationPart part = equationParts.get(0);
 
-		while(part != null && !(part.next() == null && part.prev() == null)) // Search for multiplication and division
+		while (part != null && !(part.next() == null && part.prev() == null)) // Search for multiplication and division
 		{
-			if(part.next() != null)
+			if (part.next() != null)
 			{
 				if (part.next().getFunction().equals("^") || part.next().getFunction().contains("√"))
 				{
@@ -131,7 +140,7 @@ public class Parser
 					EquationPart newPart = new EquationPart(newNumber, newFunction, newPrev, newNext);
 					equationParts.add(newPart);
 
-					if(newNext != null)
+					if (newNext != null)
 					{
 						newNext.setPrev(newPart);
 					}
@@ -142,7 +151,7 @@ public class Parser
 					part = newPart;
 				}
 
-				if(part.next() != null)
+				if (part.next() != null)
 				{
 					part = part.next();
 				}
@@ -163,9 +172,9 @@ public class Parser
 			part = part.prev();
 		}
 
-		while(part != null && !(part.next() == null && part.prev() == null)) // Search for multiplication and division
+		while (part != null && !(part.next() == null && part.prev() == null)) // Search for multiplication and division
 		{
-			if(part.next() != null)
+			if (part.next() != null)
 			{
 				if (part.next().getFunction().equals("*") || part.next().getFunction().equals("/") || part.getFunction().equals("%"))
 				{
@@ -178,12 +187,12 @@ public class Parser
 					EquationPart newPart = new EquationPart(newNumber, newFunction, newPrev, newNext);
 					equationParts.add(newPart);
 
-					if(newNext != null)
+					if (newNext != null)
 					{
 						newNext.setPrev(newPart);
 					}
 
-					if(newPart.prev() != null)
+					if (newPart.prev() != null)
 					{
 						newPart.prev().setNext(newPart);
 					}
@@ -194,7 +203,7 @@ public class Parser
 					part = newPart;
 				}
 
-				if(part.next() != null)
+				if (part.next() != null)
 				{
 					part = part.next();
 				}
@@ -215,9 +224,9 @@ public class Parser
 			part = part.prev();
 		}
 
-		while(part != null && !(part.next() == null && part.prev() == null)) // Search for everything else
+		while (part != null && !(part.next() == null && part.prev() == null)) // Search for everything else
 		{
-			if(part.next() != null)
+			if (part.next() != null)
 			{
 				EquationPart newNext = part.next().next();
 				EquationPart newPrev = part.prev();
@@ -228,7 +237,7 @@ public class Parser
 				EquationPart newPart = new EquationPart(newNumber, newFunction, newPrev, newNext);
 				equationParts.add(newPart);
 
-				if(newNext != null)
+				if (newNext != null)
 				{
 					newNext.setPrev(newPart);
 				}

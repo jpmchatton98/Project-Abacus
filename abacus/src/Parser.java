@@ -10,8 +10,10 @@ public class Parser
 	// EquationPart objects that can be compiled into the answer.
 	public double parse(String equation)
 	{
-		// Replace all multi-character strings with single characters
+		//Trim out all of the spaces
+		equation = equation.replace(" ", "");
 
+		// Replace all multi-character strings with single characters
 		equation = equation.replace("sqrt", "√");
 		equation = equation.replace("cbrt", "∛");
 		equation = equation.replace("pi", "π");

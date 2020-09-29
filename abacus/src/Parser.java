@@ -16,6 +16,7 @@ public class Parser
 	{
 		try
 		{
+			String lastFunction = null;
 			equation = prepareEquation(equation);
 			ArrayList<EquationPart> equationParts = new ArrayList<>();
 
@@ -44,6 +45,8 @@ public class Parser
 							function = "+";
 						}
 
+						lastFunction = function;
+
 						curr = new EquationPart(function);
 						equationParts.add(curr);
 						curr = null;
@@ -60,7 +63,25 @@ public class Parser
 					{
 						if (equationParts.size() > 0)
 						{
-							equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+							function = equationParts.get(equationParts.size() - 1).getFunction();
+							if(function.length() > 1)
+							{
+								if (function.charAt(function.length() - 1) == '-')
+								{
+									equationParts.get(equationParts.size() - 1).setNumber(-1 * parseDouble(number));
+									equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+											.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+								}
+								else
+								{
+									equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+								}
+							}
+							else
+							{
+								equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+							}
+							function = "";
 						}
 						else // First Element
 						{
@@ -80,7 +101,23 @@ public class Parser
 
 			if (equationParts.size() > 0)
 			{
-				equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+				if(lastFunction.length() > 1)
+				{
+					if (lastFunction.charAt(lastFunction.length() - 1) == '-')
+					{
+						equationParts.get(equationParts.size() - 1).setNumber(-1 * parseDouble(number));
+						equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+								.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+					}
+					else
+					{
+						equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+					}
+				}
+				else
+				{
+					equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+				}
 			}
 			else
 			{

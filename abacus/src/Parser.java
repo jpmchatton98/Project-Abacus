@@ -159,11 +159,23 @@ public class Parser
 
 				if(!done)
 				{
-					String lastFour = equationPart.getFunction().substring(equationPart.getFunction().length() - 4);
-					if (Arrays.toString(fourChars).contains(lastFour))
+					if(equationPart.getFunction().length() >= 4)
 					{
-						equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 4));
-						equationPart.setNumber(completeFunction(equationPart.getNumber(), lastFour));
+						String lastFour = equationPart.getFunction().substring(equationPart.getFunction().length() - 4);
+						if (Arrays.toString(fourChars).contains(lastFour))
+						{
+							equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 4));
+							equationPart.setNumber(completeFunction(equationPart.getNumber(), lastFour));
+						}
+						else
+						{
+							String lastThree = equationPart.getFunction().substring(equationPart.getFunction().length() - 3);
+							if (Arrays.toString(threeChars).contains(lastThree))
+							{
+								equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
+								equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
+							}
+						}
 					}
 					else
 					{
@@ -173,6 +185,11 @@ public class Parser
 							equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
 							equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
 						}
+					}
+
+					if(equationPart.getFunction().length() == 0)
+					{
+						equationPart.setFunction("*");
 					}
 				}
 			}

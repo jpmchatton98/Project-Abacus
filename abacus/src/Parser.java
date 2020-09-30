@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-import static java.lang.Character.MATH_SYMBOL;
 import static java.lang.Character.isDigit;
 import static java.lang.Double.NaN;
 import static java.lang.Double.parseDouble;

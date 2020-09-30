@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import static java.lang.Character.isDigit;
-
 // This class handles all of the UI functionality and contains the main() function
 public class Window
 {

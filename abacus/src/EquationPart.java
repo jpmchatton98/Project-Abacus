@@ -3,10 +3,6 @@ public class EquationPart
 	private double number;   // The number to perform the function on (e.g. 3, 5, 7, etc)
 	private String function; // The function to perform on the number (e.g. +, -, *, etc)
 
-	EquationPart(double number)
-	{
-		this.number = number;
-	}
 	EquationPart(String function)
 	{
 		this.function = function;

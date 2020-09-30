@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import static java.lang.Character.isDigit;
+
 // This class handles all of the UI functionality and contains the main() function
 public class Window
 {
@@ -13,7 +15,7 @@ public class Window
 	private static JLabel[] historyLabels; // Array of all history labels
 	private static JLabel[] answerLabels; // Array of all answer labels
 
-	private static ArrayList<String> history; // ArrayList containing raw historical equations in string form
+	public static ArrayList<String> history; // ArrayList containing raw historical equations in string form
 
 	private static Parser parser;
 

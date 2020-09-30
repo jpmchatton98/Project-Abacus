@@ -138,8 +138,10 @@ public class Parser
 	// functions with single characters.
 	private String prepareEquation(String equation)
 	{
-		//Trim out all of the spaces
 		equation = equation.replace(" ", "");
+		equation = equation.toLowerCase();
+
+		equation = "0+" + equation;
 
 		return equation;
 	}
@@ -151,21 +153,33 @@ public class Parser
 		final String[] fourChars = {"sqrt", "cbrt", "logn", "sinh", "asin", "cosh", "acos", "tanh", "atan", "sech", "asec", "csch", "acsc", "coth", "acot"};
 		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot"};
 
-		while(!done)
+		try
 		{
-			for (EquationPart equationPart : equationParts)
+			while (!done)
 			{
-				done = equationPart.getFunction().length() <= 1;
-
-				if(!done)
+				for (EquationPart equationPart : equationParts)
 				{
-					if(equationPart.getFunction().length() >= 4)
+					done = equationPart.getFunction().length() <= 1;
+
+					if (!done)
 					{
-						String lastFour = equationPart.getFunction().substring(equationPart.getFunction().length() - 4);
-						if (Arrays.toString(fourChars).contains(lastFour))
+						if (equationPart.getFunction().length() >= 4)
 						{
-							equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 4));
-							equationPart.setNumber(completeFunction(equationPart.getNumber(), lastFour));
+							String lastFour = equationPart.getFunction().substring(equationPart.getFunction().length() - 4);
+							if (Arrays.toString(fourChars).contains(lastFour))
+							{
+								equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 4));
+								equationPart.setNumber(completeFunction(equationPart.getNumber(), lastFour));
+							}
+							else
+							{
+								String lastThree = equationPart.getFunction().substring(equationPart.getFunction().length() - 3);
+								if (Arrays.toString(threeChars).contains(lastThree))
+								{
+									equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
+									equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
+								}
+							}
 						}
 						else
 						{
@@ -176,23 +190,18 @@ public class Parser
 								equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
 							}
 						}
-					}
-					else
-					{
-						String lastThree = equationPart.getFunction().substring(equationPart.getFunction().length() - 3);
-						if (Arrays.toString(threeChars).contains(lastThree))
-						{
-							equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
-							equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
-						}
-					}
 
-					if(equationPart.getFunction().length() == 0)
-					{
-						equationPart.setFunction("*");
+						if (equationPart.getFunction().length() == 0)
+						{
+							equationPart.setFunction("*");
+						}
 					}
 				}
 			}
+		}
+		catch(IndexOutOfBoundsException e)
+		{
+			return null;
 		}
 
 		return equationParts;
@@ -308,6 +317,10 @@ public class Parser
 	private double compileEquation(ArrayList<EquationPart> equationParts)
 	{
 		equationParts = completeFunctions(equationParts);
+		if(equationParts == null)
+		{
+			return NaN;
+		}
 
 		int index = 0;
 		while(equationParts.size() > 1)
@@ -415,7 +428,7 @@ public class Parser
 		}
 	}
 
-	private boolean isNumberOrPeriod(char input)
+	public boolean isNumberOrPeriod(char input)
 	{
 		return isDigit(input) || input == '.';
 	}

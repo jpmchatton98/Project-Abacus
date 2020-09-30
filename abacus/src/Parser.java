@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,49 +144,161 @@ public class Parser
 		//Trim out all of the spaces
 		equation = equation.replace(" ", "");
 
-		// Replace all multi-character strings with single characters
-		equation = equation.replace("sqrt", "√");
-		equation = equation.replace("cbrt", "∛");
-		equation = equation.replace("pi", "π");
-		equation = equation.replace("log", "L");
-		equation = equation.replace("logn", "Ł");
-
-		// Trigonometric function logic:
-		//      - Basic functions (sin, cos, tan) are lowercase
-		//      - Complex functions (sec, csc, cot) are uppercase
-		//      - Arc functions have cedillas
-		//      - Hyperbolic functions have carons
-		//      - Do arc and hyperbolic functions first so that we don't replace parts of them
-		equation = equation.replace("asin", "ç");
-		equation = equation.replace("acos", "ş");
-		equation = equation.replace("atan", "ţ");
-		equation = equation.replace("asec", "Ş");
-		equation = equation.replace("acsc", "Ç");
-		equation = equation.replace("acot", "Ţ");
-
-		equation = equation.replace("sinh", "š");
-		equation = equation.replace("cosh", "č");
-		equation = equation.replace("tanh", "ť");
-		equation = equation.replace("sech", "Š");
-		equation = equation.replace("csch", "Č");
-		equation = equation.replace("coth", "Ť");
-
-		equation = equation.replace("sin", "s");
-		equation = equation.replace("cos", "c");
-		equation = equation.replace("tan", "t");
-		equation = equation.replace("sec", "S");
-		equation = equation.replace("csc", "C");
-		equation = equation.replace("cot", "T");
-
 		return equation;
+	}
+
+	private ArrayList<EquationPart> completeFunctions(ArrayList<EquationPart> equationParts)
+	{
+		boolean done = false;
+
+		final String[] fourChars = {"sqrt", "cbrt", "logn", "sinh", "asin", "cosh", "acos", "tanh", "atan", "sech", "asec", "csch", "acsc", "coth", "acot"};
+		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot"};
+
+		while(!done)
+		{
+			for (EquationPart equationPart : equationParts)
+			{
+				done = equationPart.getFunction().length() <= 1;
+
+				if(!done)
+				{
+					String lastFour = equationPart.getFunction().substring(equationPart.getFunction().length() - 4);
+					if (Arrays.toString(fourChars).contains(lastFour))
+					{
+						equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 4));
+						equationPart.setNumber(completeFunction(equationPart.getNumber(), lastFour));
+					}
+					else
+					{
+						String lastThree = equationPart.getFunction().substring(equationPart.getFunction().length() - 3);
+						if (Arrays.toString(threeChars).contains(lastThree))
+						{
+							equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
+							equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
+						}
+					}
+				}
+			}
+		}
+
+		return equationParts;
+	}
+	private double completeFunction(double num, String function)
+	{
+		switch(function)
+		{
+			case "sqrt": // Square Root
+			{
+				return Math.sqrt(num);
+			}
+			case "cbrt": // Cube Root
+			{
+				return Math.cbrt(num);
+			}
+
+			case "log": // Log base 10
+			{
+				return Math.log10(num);
+			}
+			case "logn": // Natural Log
+			{
+				return Math.log(num);
+			}
+
+			case "sin": // Sine
+			{
+				return Math.sin(num);
+			}
+			case "sinh": // Hyperbolic Sine
+			{
+				return Math.sinh(num);
+			}
+			case "asin": // Arcsine
+			{
+				return Math.asin(num);
+			}
+
+			case "cos": // Cosine
+			{
+				return Math.cos(num);
+			}
+			case "cosh": // Hyperbolic Cosine
+			{
+				return Math.cosh(num);
+			}
+			case "acos": // Arccosine
+			{
+				return Math.acos(num);
+			}
+
+			case "tan": // Tangent
+			{
+				return Math.tan(num);
+			}
+			case "tanh": // Hyperbolic Tangent
+			{
+				return Math.tanh(num);
+			}
+			case "atan": // Arctangent
+			{
+				return Math.atan(num);
+			}
+
+			case "sec": // Secant
+			{
+				return 1 / Math.cos(num);
+			}
+			case "sech": // Hyperbolic Secant
+			{
+				return 1 / Math.cosh(num);
+			}
+			case "asec": // Arcsecant
+			{
+				return 1 / Math.acos(num);
+			}
+
+			case "csc": // Cosecant
+			{
+				return 1 / Math.sin(num);
+			}
+			case "csch": // Hyperbolic Cosecant
+			{
+				return 1 / Math.sinh(num);
+			}
+			case "acsc": // Arccosecant
+			{
+				return 1 / Math.asin(num);
+			}
+
+			case "cot": // Cotangent
+			{
+				return 1 / Math.tan(num);
+			}
+			case "coth": // Hyperbolic Cotangent
+			{
+				return 1 / Math.tanh(num);
+			}
+			case "acot": // Arccotangent
+			{
+				return 1 / Math.atan(num);
+			}
+
+			default:
+			{
+				System.out.println("Invalid function.");
+				return NaN;
+			}
+		}
 	}
 
 	private double compileEquation(ArrayList<EquationPart> equationParts)
 	{
+		equationParts = completeFunctions(equationParts);
+
 		int index = 0;
 		while(equationParts.size() > 1)
 		{
-			if(equationParts.get(index + 1).getFunction().equals("^") || equationParts.get(index + 1).getFunction().contains("√"))
+			if(equationParts.get(index + 1).getFunction().equals("^"))
 			{
 				EquationPart part = equationParts.get(index);
 				EquationPart nextPart = equationParts.get(index + 1);
@@ -279,23 +392,6 @@ public class Parser
 			case "%":
 			{
 				return num1 % num2;
-			}
-			case "+√":
-			{
-				return num1 + Math.sqrt(num2);
-			}
-			case "-√":
-			{
-				return num1 - Math.sqrt(num2);
-			}
-			case "√":
-			case "*√":
-			{
-				return num1 * Math.sqrt(num2);
-			}
-			case "/√":
-			{
-				return num1 / Math.sqrt(num2);
 			}
 			default:
 			{

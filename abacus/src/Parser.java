@@ -203,9 +203,11 @@ public class Parser
 		final String[] fourChars = {"sqrt", "cbrt", "logn", "sinh", "asin", "cosh", "acos", "tanh", "atan", "sech", "asec", "csch", "acsc", "coth", "acot"};
 		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot", "log", "abs"};
 
+		boolean invalid = false;
+
 		try
 		{
-			while (!done)
+			while (!done && !invalid)
 			{
 				for (EquationPart equationPart : equationParts)
 				{
@@ -229,6 +231,12 @@ public class Parser
 									equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
 									equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
 								}
+								else
+								{
+									System.out.println("Invalid function");
+									invalid = true;
+									break;
+								}
 							}
 						}
 						else
@@ -238,6 +246,12 @@ public class Parser
 							{
 								equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
 								equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
+							}
+							else
+							{
+								System.out.println("Invalid function");
+								invalid = true;
+								break;
 							}
 						}
 

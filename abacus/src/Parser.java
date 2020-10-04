@@ -201,7 +201,7 @@ public class Parser
 		boolean done = false;
 
 		final String[] fourChars = {"sqrt", "cbrt", "logn", "sinh", "asin", "cosh", "acos", "tanh", "atan", "sech", "asec", "csch", "acsc", "coth", "acot"};
-		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot", "abs"};
+		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot", "log", "abs"};
 
 		try
 		{

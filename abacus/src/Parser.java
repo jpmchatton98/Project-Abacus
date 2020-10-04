@@ -475,6 +475,20 @@ public class Parser
 			{
 				return num1 % num2;
 			}
+
+			case "&": // Binary AND
+			{
+				return (int) num1 & (int) num2;
+			}
+			case "|": // Binary OR
+			{
+				return (int) num1 | (int) num2;
+			}
+			case "⊕": // Binary XOR
+			{
+				return (int) num1 ^ (int) num2;
+			}
+
 			default:
 			{
 				System.out.println("Invalid function");

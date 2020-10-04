@@ -407,7 +407,7 @@ public class Parser
 		index = 0;
 		while(equationParts.size() > 1)
 		{
-			if(equationParts.get(index + 1).getFunction().equals("*") || equationParts.get(index + 1).getFunction().equals("/"))
+			if(equationParts.get(index + 1).getFunction().equals("*") || equationParts.get(index + 1).getFunction().equals("/") || equationParts.get(index + 1).getFunction().equals("%"))
 			{
 				EquationPart part = equationParts.get(index);
 				EquationPart nextPart = equationParts.get(index + 1);
@@ -451,27 +451,28 @@ public class Parser
 	{
 		switch(function)
 		{
-			case "+":
+			case "+": // Addition
 			{
 				return num1 + num2;
 			}
-			case "-":
+			case "-": // Subtraction
 			{
 				return num1 - num2;
 			}
-			case "*":
+			case "*": // Multiplication
 			{
 				return num1 * num2;
 			}
-			case "/":
+			case "/": // Division
 			{
 				return num1 / num2;
 			}
-			case "^":
+
+			case "^": // Exponent
 			{
 				return Math.pow(num1, num2);
 			}
-			case "%":
+			case "%": // Modulus
 			{
 				return num1 % num2;
 			}

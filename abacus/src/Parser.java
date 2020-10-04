@@ -33,11 +33,11 @@ public class Parser
 					continue;
 				}
 
-				if(equation.charAt(i) == '(')
+				if(equation.charAt(i) == '(') // If equation contains an opening parenthesis
 				{
-					int pTally = 0;
-					int pStart = i;
-					int pEnd = 0;
+					int pTally = 0; // Tally of parenthetic blocks, so that we don't match them up incorrectly
+					int pStart = i; // Starting index of the parentheses
+					int pEnd = 0; // Ending index of the parentheses
 
 					for(i = i + 1; i < equation.length(); i++)
 					{
@@ -201,7 +201,7 @@ public class Parser
 		boolean done = false;
 
 		final String[] fourChars = {"sqrt", "cbrt", "logn", "sinh", "asin", "cosh", "acos", "tanh", "atan", "sech", "asec", "csch", "acsc", "coth", "acot"};
-		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot"};
+		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot", "abs"};
 
 		try
 		{
@@ -267,6 +267,11 @@ public class Parser
 			case "cbrt": // Cube Root
 			{
 				return Math.cbrt(num);
+			}
+
+			case "abs": // Absolute Value
+			{
+				return Math.abs(num);
 			}
 
 			case "log": // Log base 10

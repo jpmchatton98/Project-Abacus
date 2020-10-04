@@ -18,7 +18,6 @@ public class Parser
 			equation = prepareEquation(equation);
 			ArrayList<EquationPart> equationParts = new ArrayList<>();
 
-			// Change the equation string to an array
 			String number = "";
 			String function = "";
 			EquationPart curr = null;
@@ -32,6 +31,56 @@ public class Parser
 				{
 					startingNegative = true;
 					continue;
+				}
+
+				if(equation.charAt(i) == '(')
+				{
+					int pTally = 0;
+					int pStart = i;
+					int pEnd = 0;
+
+					for(i = i + 1; i < equation.length(); i++)
+					{
+						if(equation.charAt(i) == '(')
+						{
+							pTally++;
+						}
+						else if(equation.charAt(i) == ')')
+						{
+							if (pTally == 0)
+							{
+								pEnd = i;
+								break;
+							}
+							else
+							{
+								pTally--;
+							}
+						}
+					}
+
+					if(pTally != 0)
+					{
+						throw new NumberFormatException();
+					}
+					else
+					{
+						String p = equation.substring(pStart, pEnd + 1);
+						String pTrim = p.substring(1, p.length() - 1);
+						equation = equation.replace(p, parse(pTrim) + "");
+
+						if(isNumberOrPeriod(equation.charAt(pStart - 1)))
+						{
+							equation = equation.substring(0, pStart) + "*" + equation.substring(pStart);
+						}
+
+						equationParts.clear();
+						number = "";
+						function = "";
+
+						i = -1;
+						continue;
+					}
 				}
 
 				if (isNumberOrPeriod(equation.charAt(i)))
@@ -130,6 +179,7 @@ public class Parser
 		}
 		catch(NumberFormatException e)
 		{
+			e.printStackTrace();
 			return NaN;
 		}
 	}

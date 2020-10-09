@@ -191,6 +191,37 @@ public class Parser
 		equation = equation.replace(" ", "");
 		equation = equation.toLowerCase();
 
+		equation = equation.replace("pi"  , "π");
+		equation = equation.replace("sqrt", "√");
+		equation = equation.replace("cbrt", "∛");
+		equation = equation.replace("logn", "Ł");
+		equation = equation.replace("log" , "L");
+		equation = equation.replace("abs" , "A");
+
+		equation = equation.replace("asin", "š");
+		equation = equation.replace("sinh", "Š");
+		equation = equation.replace("sin" , "S");
+
+		equation = equation.replace("acos", "č");
+		equation = equation.replace("cosh", "Č");
+		equation = equation.replace("cos" , "C");
+
+		equation = equation.replace("atan", "ť");
+		equation = equation.replace("tanh", "Ť");
+		equation = equation.replace("tan" , "T");
+
+		equation = equation.replace("acsc", "ç");
+		equation = equation.replace("csch", "ƈ");
+		equation = equation.replace("csc", "Ç");
+
+		equation = equation.replace("acot", "ţ");
+		equation = equation.replace("coth", "ƭ");
+		equation = equation.replace("cot", "Ţ");
+
+		equation = equation.replace("asec", "ş");
+		equation = equation.replace("sech", "ʂ");
+		equation = equation.replace("sec", "Ş");
+
 		equation = "0+" + equation;
 
 		return equation;
@@ -200,72 +231,20 @@ public class Parser
 	{
 		boolean done = false;
 
-		final String[] fourChars = {"sqrt", "cbrt", "logn", "sinh", "asin", "cosh", "acos", "tanh", "atan", "sech", "asec", "csch", "acsc", "coth", "acot"};
-		final String[] threeChars = {"sin", "cos", "tan", "sec", "csc", "cot", "log", "abs"};
-
-		boolean invalid = false;
-
-		try
+		while (!done)
 		{
-			while (!done && !invalid)
+			for (EquationPart equationPart : equationParts)
 			{
-				for (EquationPart equationPart : equationParts)
+				done = equationPart.getFunction().length() <= 1;
+
+				if(!done)
 				{
-					done = equationPart.getFunction().length() <= 1;
+					String lastChar = equationPart.getFunction().charAt(equationPart.getFunction().length() - 1) + "";
 
-					if (!done)
-					{
-						if (equationPart.getFunction().length() >= 4)
-						{
-							String lastFour = equationPart.getFunction().substring(equationPart.getFunction().length() - 4);
-							if (Arrays.toString(fourChars).contains(lastFour))
-							{
-								equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 4));
-								equationPart.setNumber(completeFunction(equationPart.getNumber(), lastFour));
-							}
-							else
-							{
-								String lastThree = equationPart.getFunction().substring(equationPart.getFunction().length() - 3);
-								if (Arrays.toString(threeChars).contains(lastThree))
-								{
-									equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
-									equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
-								}
-								else
-								{
-									System.out.println("Invalid function");
-									invalid = true;
-									break;
-								}
-							}
-						}
-						else
-						{
-							String lastThree = equationPart.getFunction().substring(equationPart.getFunction().length() - 3);
-							if (Arrays.toString(threeChars).contains(lastThree))
-							{
-								equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 3));
-								equationPart.setNumber(completeFunction(equationPart.getNumber(), lastThree));
-							}
-							else
-							{
-								System.out.println("Invalid function");
-								invalid = true;
-								break;
-							}
-						}
-
-						if (equationPart.getFunction().length() == 0)
-						{
-							equationPart.setFunction("*");
-						}
-					}
+					equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 1));
+					equationPart.setNumber(completeFunction(equationPart.getNumber(), lastChar));
 				}
 			}
-		}
-		catch(IndexOutOfBoundsException e)
-		{
-			return null;
 		}
 
 		return equationParts;
@@ -274,103 +253,103 @@ public class Parser
 	{
 		switch(function)
 		{
-			case "sqrt": // Square Root
+			case "√": // Square Root
 			{
 				return Math.sqrt(num);
 			}
-			case "cbrt": // Cube Root
+			case "∛": // Cube Root
 			{
 				return Math.cbrt(num);
 			}
 
-			case "abs": // Absolute Value
+			case "A": // Absolute Value
 			{
 				return Math.abs(num);
 			}
 
-			case "log": // Log base 10
+			case "L": // Log base 10
 			{
 				return Math.log10(num);
 			}
-			case "logn": // Natural Log
+			case "Ł": // Natural Log
 			{
 				return Math.log(num);
 			}
 
-			case "sin": // Sine
+			case "S": // Sine
 			{
 				return Math.sin(num);
 			}
-			case "sinh": // Hyperbolic Sine
+			case "Š": // Hyperbolic Sine
 			{
 				return Math.sinh(num);
 			}
-			case "asin": // Arcsine
+			case "š": // Arcsine
 			{
 				return Math.asin(num);
 			}
 
-			case "cos": // Cosine
+			case "C": // Cosine
 			{
 				return Math.cos(num);
 			}
-			case "cosh": // Hyperbolic Cosine
+			case "Č": // Hyperbolic Cosine
 			{
 				return Math.cosh(num);
 			}
-			case "acos": // Arccosine
+			case "č": // Arccosine
 			{
 				return Math.acos(num);
 			}
 
-			case "tan": // Tangent
+			case "T": // Tangent
 			{
 				return Math.tan(num);
 			}
-			case "tanh": // Hyperbolic Tangent
+			case "Ť": // Hyperbolic Tangent
 			{
 				return Math.tanh(num);
 			}
-			case "atan": // Arctangent
+			case "ť": // Arctangent
 			{
 				return Math.atan(num);
 			}
 
-			case "sec": // Secant
+			case "Ş": // Secant
 			{
 				return 1 / Math.cos(num);
 			}
-			case "sech": // Hyperbolic Secant
+			case "ʂ": // Hyperbolic Secant
 			{
 				return 1 / Math.cosh(num);
 			}
-			case "asec": // Arcsecant
+			case "ş": // Arcsecant
 			{
 				return 1 / Math.acos(num);
 			}
 
-			case "csc": // Cosecant
+			case "Ç": // Cosecant
 			{
 				return 1 / Math.sin(num);
 			}
-			case "csch": // Hyperbolic Cosecant
+			case "ƈ": // Hyperbolic Cosecant
 			{
 				return 1 / Math.sinh(num);
 			}
-			case "acsc": // Arccosecant
+			case "ç": // Arccosecant
 			{
 				return 1 / Math.asin(num);
 			}
 
-			case "cot": // Cotangent
+			case "Ţ": // Cotangent
 			{
 				return 1 / Math.tan(num);
 			}
-			case "coth": // Hyperbolic Cotangent
+			case "ƭ": // Hyperbolic Cotangent
 			{
 				return 1 / Math.tanh(num);
 			}
-			case "acot": // Arccotangent
+			case "ţ": // Arccotangent
 			{
 				return 1 / Math.atan(num);
 			}
@@ -385,7 +364,7 @@ public class Parser
 
 	private double compileEquation(ArrayList<EquationPart> equationParts)
 	{
-		equationParts = completeFunctions(equationParts);
+		completeFunctions(equationParts);
 		if(equationParts == null)
 		{
 			return NaN;

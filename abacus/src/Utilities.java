@@ -10,13 +10,14 @@ public class Utilities
 		equation = equation.replace(" ", "");
 		equation = equation.toLowerCase();
 
-		equation = equation.replace("pi"  , "π");
+		// Basic Functions (roots, logs, and absolute value)
 		equation = equation.replace("sqrt", "√");
 		equation = equation.replace("cbrt", "∛");
 		equation = equation.replace("logn", "Ł");
 		equation = equation.replace("log" , "L");
 		equation = equation.replace("abs" , "A");
 
+		// Trig Functions
 		equation = equation.replace("asin", "š");
 		equation = equation.replace("sinh", "Š");
 		equation = equation.replace("sin" , "S");
@@ -31,15 +32,19 @@ public class Utilities
 
 		equation = equation.replace("acsc", "ç");
 		equation = equation.replace("csch", "ƈ");
-		equation = equation.replace("csc", "Ç");
+		equation = equation.replace("csc" , "Ç");
 
 		equation = equation.replace("acot", "ţ");
 		equation = equation.replace("coth", "ƭ");
-		equation = equation.replace("cot", "Ţ");
+		equation = equation.replace("cot" , "Ţ");
 
 		equation = equation.replace("asec", "ş");
 		equation = equation.replace("sech", "ʂ");
-		equation = equation.replace("sec", "Ş");
+		equation = equation.replace("sec" , "Ş");
+
+		// Constants
+		equation = equation.replace("pi"  , "π");
+		equation = equation.replace("e"   , "€");
 
 		equation = "0+" + equation;
 
@@ -212,8 +217,9 @@ public class Utilities
 		}
 	}
 
+	// Returns true if the functions finds a digit, a period, a euro symbol (euler's number), or a lowercase pi (pi)
 	public boolean isNumberOrPeriod(char input)
 	{
-		return isDigit(input) || input == '.';
+		return isDigit(input) || input == '.' || input == '€' || input == 'π';
 	}
 }

@@ -1,5 +1,6 @@
 import static java.lang.Character.isDigit;
 import static java.lang.Double.NaN;
+import static java.lang.Double.parseDouble;
 
 public class Utilities
 {
@@ -215,6 +216,24 @@ public class Utilities
 				return NaN;
 			}
 		}
+	}
+
+	public double parseNum(String input)
+	{
+		if(input.contains("€") || input.contains("π"))
+		{
+			return parseConstants(input);
+		}
+		else
+		{
+			return parseDouble(input);
+		}
+	}
+
+	public double parseConstants(String input)
+	{
+		//TODO: Create constant parsing algorithm
+		return NaN;
 	}
 
 	// Returns true if the functions finds a digit, a period, a euro symbol (euler's number), or a lowercase pi (pi)

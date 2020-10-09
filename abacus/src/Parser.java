@@ -1,8 +1,5 @@
 import java.util.ArrayList;
-
-import static java.lang.Character.isDigit;
 import static java.lang.Double.NaN;
-import static java.lang.Double.parseDouble;
 
 // This class contains code for the core parsing algorithm
 public class Parser
@@ -116,18 +113,18 @@ public class Parser
 							{
 								if (function.charAt(function.length() - 1) == '-')
 								{
-									equationParts.get(equationParts.size() - 1).setNumber(-1 * parseDouble(number));
+									equationParts.get(equationParts.size() - 1).setNumber(-1 * util.parseNum(number));
 									equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
 											.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
 								}
 								else
 								{
-									equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+									equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
 								}
 							}
 							else
 							{
-								equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+								equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
 							}
 							function = "";
 						}
@@ -137,7 +134,7 @@ public class Parser
 							{
 								number = "-" + number;
 							}
-							equationParts.add(new EquationPart(parseDouble(number), "+"));
+							equationParts.add(new EquationPart(util.parseNum(number), "+"));
 						}
 						number = "";
 					}
@@ -153,18 +150,18 @@ public class Parser
 				{
 					if (lastFunction.charAt(lastFunction.length() - 1) == '-')
 					{
-						equationParts.get(equationParts.size() - 1).setNumber(-1 * parseDouble(number));
+						equationParts.get(equationParts.size() - 1).setNumber(-1 * util.parseNum(number));
 						equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
 								.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
 					}
 					else
 					{
-						equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+						equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
 					}
 				}
 				else
 				{
-					equationParts.get(equationParts.size() - 1).setNumber(parseDouble(number));
+					equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
 				}
 			}
 			else
@@ -173,7 +170,7 @@ public class Parser
 				{
 					number = "-" + number;
 				}
-				return parseDouble(number);
+				return util.parseNum(number);
 			}
 
 			return compileEquation(equationParts);

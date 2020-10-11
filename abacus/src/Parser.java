@@ -169,7 +169,7 @@ public class Parser
 				{
 					number = "-" + number;
 				}
-				return util.parseNum(number);
+				return Double.parseDouble(number);
 			}
 
 			return compileEquation(equationParts);

@@ -11,6 +11,11 @@ public class Utilities
 		equation = equation.replace(" ", "");
 		equation = equation.toLowerCase();
 
+		// Binary Equations
+		equation = equation.replace("<<"  , "<");
+		equation = equation.replace(">>"  , ">");
+		equation = equation.replace("xor" , "⊕");
+
 		// Basic Functions (roots, logs, and absolute value)
 		equation = equation.replace("sqrt", "√");
 		equation = equation.replace("cbrt", "∛");
@@ -48,8 +53,6 @@ public class Utilities
 		equation = equation.replace("e"   , "€");
 
 		equation = "0+" + equation;
-
-		System.out.println(equation);
 
 		return equation;
 	}
@@ -95,6 +98,14 @@ public class Utilities
 			case "⊕": // Binary XOR
 			{
 				return (int) num1 ^ (int) num2;
+			}
+			case "<": // Left Shift
+			{
+				return (int) num1 << (int) num2;
+			}
+			case ">": // Right Shift
+			{
+				return (int) num1 >> (int) num2;
 			}
 
 			default:
@@ -216,25 +227,6 @@ public class Utilities
 				return NaN;
 			}
 		}
-	}
-
-	public double parseNum(String input)
-	{
-		if(input.contains("€") || input.contains("π"))
-		{
-			return parseConstants(input);
-		}
-		else
-		{
-			return parseDouble(input);
-		}
-	}
-
-	public double parseConstants(String input)
-	{
-		//TODO: Create constant parsing algorithm
-
-		return NaN;
 	}
 
 	// Returns true if the functions finds a digit, a period, a euro symbol (euler's number), or a lowercase pi (pi)

@@ -18,7 +18,7 @@ public class Parser
 
 			String number = "";
 			String function = "";
-			EquationPart curr = null;
+			EquationPart curr;
 
 			boolean startingNegative = false;
 			int mode = 0; // 0: Number, 1: Function
@@ -94,7 +94,6 @@ public class Parser
 
 						curr = new EquationPart(function);
 						equationParts.add(curr);
-						curr = null;
 
 						function = "";
 					}
@@ -113,18 +112,18 @@ public class Parser
 							{
 								if (function.charAt(function.length() - 1) == '-')
 								{
-									equationParts.get(equationParts.size() - 1).setNumber(-1 * util.parseNum(number));
+									equationParts.get(equationParts.size() - 1).setNumber("-" + number);
 									equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
 											.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
 								}
 								else
 								{
-									equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
+									equationParts.get(equationParts.size() - 1).setNumber(number);
 								}
 							}
 							else
 							{
-								equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
+								equationParts.get(equationParts.size() - 1).setNumber(number);
 							}
 							function = "";
 						}
@@ -134,7 +133,7 @@ public class Parser
 							{
 								number = "-" + number;
 							}
-							equationParts.add(new EquationPart(util.parseNum(number), "+"));
+							equationParts.add(new EquationPart(number, "+"));
 						}
 						number = "";
 					}
@@ -150,18 +149,18 @@ public class Parser
 				{
 					if (lastFunction.charAt(lastFunction.length() - 1) == '-')
 					{
-						equationParts.get(equationParts.size() - 1).setNumber(-1 * util.parseNum(number));
+						equationParts.get(equationParts.size() - 1).setNumber("-" + number);
 						equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
 								.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
 					}
 					else
 					{
-						equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
+						equationParts.get(equationParts.size() - 1).setNumber(number);
 					}
 				}
 				else
 				{
-					equationParts.get(equationParts.size() - 1).setNumber(util.parseNum(number));
+					equationParts.get(equationParts.size() - 1).setNumber(number);
 				}
 			}
 			else
@@ -197,20 +196,92 @@ public class Parser
 					String lastChar = equationPart.getFunction().charAt(equationPart.getFunction().length() - 1) + "";
 
 					equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 1));
-					equationPart.setNumber(util.completeFunction(equationPart.getNumber(), lastChar));
+					equationPart.setNumber(util.completeFunction(equationPart.getNumber(), lastChar) + "");
+				}
+			}
+		}
+	}
+
+	private void parseConstants(ArrayList<EquationPart> equationParts)
+	{
+		boolean done = false;
+
+		for(EquationPart equationPart : equationParts)
+		{
+			if(equationPart.getNumberString().equals("π") || equationPart.getNumberString().equals("€"))
+			{
+				switch (equationPart.getNumberString())
+				{
+					case "π":
+					{
+						equationPart.setNumber(Math.PI + "");
+						break;
+					}
+					case "€":
+					{
+						equationPart.setNumber(Math.exp(1) + "");
+						break;
+					}
+					default:
+					{
+						System.out.println("Invalid constant");
+						break;
+					}
 				}
 			}
 		}
 
+		while (!done)
+		{
+			for (int i = 0; i < equationParts.size(); i++)
+			{
+				if(equationParts.get(i).getNumberString().length() > 1)
+				{
+					done = !((equationParts.get(i).getNumberString()).contains("π") || (equationParts.get(i).getNumberString()).contains("€"));
+
+					if (!done)
+					{
+						String constant = equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1) + "";
+						equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+						// Math.pi
+						// Math.exp(1)
+
+						switch(constant)
+						{
+							case "π":
+							{
+								constant = Math.PI + "";
+								break;
+							}
+							case "€":
+							{
+								constant = Math.exp(1) + "";
+								break;
+							}
+							default:
+							{
+								System.out.println("Invalid constant");
+								break;
+							}
+						}
+
+						EquationPart newPart = new EquationPart(constant, "*");
+						equationParts.add(i + 1, newPart);
+					}
+				}
+				else
+				{
+					done = true;
+				}
+			}
+		}
 	}
 
 	private double compileEquation(ArrayList<EquationPart> equationParts)
 	{
+		parseConstants(equationParts);
 		completeFunctions(equationParts);
-		if(equationParts == null)
-		{
-			return NaN;
-		}
 
 		int index = 0;
 		while(equationParts.size() > 1)
@@ -221,7 +292,7 @@ public class Parser
 				EquationPart nextPart = equationParts.get(index + 1);
 
 				double newNumber = util.compileFunction(part.getNumber(), nextPart.getNumber(), nextPart.getFunction());
-				EquationPart newPart = new EquationPart(newNumber, part.getFunction());
+				EquationPart newPart = new EquationPart(newNumber + "", part.getFunction());
 
 				equationParts.remove(part);
 				equationParts.remove(nextPart);
@@ -248,7 +319,7 @@ public class Parser
 				EquationPart nextPart = equationParts.get(index + 1);
 
 				double newNumber = util.compileFunction(part.getNumber(), nextPart.getNumber(), nextPart.getFunction());
-				EquationPart newPart = new EquationPart(newNumber, part.getFunction());
+				EquationPart newPart = new EquationPart(newNumber + "", part.getFunction());
 
 				equationParts.remove(part);
 				equationParts.remove(nextPart);
@@ -272,7 +343,7 @@ public class Parser
 			EquationPart nextPart = equationParts.get(index + 1);
 
 			double newNumber = util.compileFunction(part.getNumber(), nextPart.getNumber(), nextPart.getFunction());
-			EquationPart newPart = new EquationPart(newNumber, part.getFunction());
+			EquationPart newPart = new EquationPart(newNumber + "", part.getFunction());
 
 			equationParts.remove(part);
 			equationParts.remove(nextPart);

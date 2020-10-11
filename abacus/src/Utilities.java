@@ -233,6 +233,7 @@ public class Utilities
 	public double parseConstants(String input)
 	{
 		//TODO: Create constant parsing algorithm
+
 		return NaN;
 	}
 

@@ -1,13 +1,15 @@
+import static java.lang.Double.parseDouble;
+
 public class EquationPart
 {
-	private double number;   // The number to perform the function on (e.g. 3, 5, 7, etc)
+	private String number;   // The number to perform the function on (e.g. 3, 5, 7, etc)
 	private String function; // The function to perform on the number (e.g. +, -, *, etc), can be multiple characters
 
 	EquationPart(String function)
 	{
 		this.function = function;
 	}
-	EquationPart(double number, String function)
+	EquationPart(String number, String function)
 	{
 		this.number = number;
 		this.function = function;
@@ -15,9 +17,10 @@ public class EquationPart
 
 	public double getNumber()
 	{
-		return number;
+		return parseDouble(number);
 	}
-	public void setNumber(double number)
+	public String getNumberString() { return number; }
+	public void setNumber(String number)
 	{
 		this.number = number;
 	}

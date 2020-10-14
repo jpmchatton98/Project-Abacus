@@ -1,10 +1,13 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import static java.lang.Double.NaN;
 
 // This class contains code for the core parsing algorithm
 public class Parser
 {
 	Utilities util = new Utilities();
+	final String[] functions = new String[]{"√", "∛", "Ł", "Ĺ", "Ä", "š", "Š", "Ŝ", "č", "Č", "Ċ", "ť", "Ť", "Ŧ", "ç", "ƈ", "Ç", "ţ", "ƭ", "Ţ", "ş", "ʂ", "Ş"};
 
 	// Core parsing function.  Accepts the equation string as an input and outputs the answer
 	// in the form of a double.
@@ -191,12 +194,20 @@ public class Parser
 			{
 				done = equationPart.getFunction().length() <= 1;
 
-				if(!done)
+				if (!done)
 				{
 					String lastChar = equationPart.getFunction().charAt(equationPart.getFunction().length() - 1) + "";
 
 					equationPart.setFunction(equationPart.getFunction().substring(0, equationPart.getFunction().length() - 1));
 					equationPart.setNumber(util.completeFunction(equationPart.getNumber(), lastChar) + "");
+				}
+				else
+				{
+					if(Arrays.toString(functions).contains(equationPart.getFunction())) //Checks to see if the equationpart function is 1 character, but that character is a recognized function
+					{
+						equationPart.setNumber(util.completeFunction(equationPart.getNumber(), equationPart.getFunction()) + "");
+						equationPart.setFunction("*");
+					}
 				}
 			}
 		}

@@ -20,21 +20,21 @@ public class Utilities
 		equation = equation.replace("sqrt", "√");
 		equation = equation.replace("cbrt", "∛");
 		equation = equation.replace("logn", "Ł");
-		equation = equation.replace("log" , "L");
-		equation = equation.replace("abs" , "A");
+		equation = equation.replace("log" , "Ĺ");
+		equation = equation.replace("abs" , "Ä");
 
 		// Trig Functions
 		equation = equation.replace("asin", "š");
 		equation = equation.replace("sinh", "Š");
-		equation = equation.replace("sin" , "S");
+		equation = equation.replace("sin" , "Ŝ");
 
 		equation = equation.replace("acos", "č");
 		equation = equation.replace("cosh", "Č");
-		equation = equation.replace("cos" , "C");
+		equation = equation.replace("cos" , "Ċ");
 
 		equation = equation.replace("atan", "ť");
 		equation = equation.replace("tanh", "Ť");
-		equation = equation.replace("tan" , "T");
+		equation = equation.replace("tan" , "Ŧ");
 
 		equation = equation.replace("acsc", "ç");
 		equation = equation.replace("csch", "ƈ");
@@ -129,12 +129,12 @@ public class Utilities
 				return Math.cbrt(num);
 			}
 
-			case "A": // Absolute Value
+			case "Ä": // Absolute Value
 			{
 				return Math.abs(num);
 			}
 
-			case "L": // Log base 10
+			case "Ĺ": // Log base 10
 			{
 				return Math.log10(num);
 			}
@@ -143,7 +143,7 @@ public class Utilities
 				return Math.log(num);
 			}
 
-			case "S": // Sine
+			case "Ŝ": // Sine
 			{
 				return Math.sin(num);
 			}
@@ -156,7 +156,7 @@ public class Utilities
 				return Math.asin(num);
 			}
 
-			case "C": // Cosine
+			case "Ċ": // Cosine
 			{
 				return Math.cos(num);
 			}
@@ -169,7 +169,7 @@ public class Utilities
 				return Math.acos(num);
 			}
 
-			case "T": // Tangent
+			case "Ŧ": // Tangent
 			{
 				return Math.tan(num);
 			}

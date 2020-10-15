@@ -1,4 +1,7 @@
+import java.util.Arrays;
+
 import static java.lang.Character.isDigit;
+import static java.lang.Character.toUpperCase;
 import static java.lang.Double.NaN;
 import static java.lang.Double.parseDouble;
 
@@ -6,7 +9,7 @@ public class Utilities
 {
 	// Prepares the equation for parsing by trimming out spaces and replacing multi-character
 	// functions with single characters.
-	public String prepareEquation(String equation)
+	public String prepareEquation(String equation, String[][] variables)
 	{
 		equation = equation.replace(" ", "");
 		equation = equation.toLowerCase();
@@ -50,7 +53,7 @@ public class Utilities
 
 		// Constants
 		equation = equation.replace("pi"  , "π");
-		equation = equation.replace("e"   , "€");
+		equation = equation.replace("e"   , "E");
 
 		equation = "0+" + equation;
 
@@ -99,11 +102,11 @@ public class Utilities
 			{
 				return (int) num1 ^ (int) num2;
 			}
-			case "<": // Left Shift
+			case "<": // Left Bit Shift
 			{
 				return (int) num1 << (int) num2;
 			}
-			case ">": // Right Shift
+			case ">": // Right Bit Shift
 			{
 				return (int) num1 >> (int) num2;
 			}
@@ -229,9 +232,9 @@ public class Utilities
 		}
 	}
 
-	// Returns true if the functions finds a digit, a period, a euro symbol (euler's number), or a lowercase pi (pi)
-	public boolean isNumberOrPeriod(char input)
+	// Returns true if the functions finds a digit, a period, a capital letter E (euler's number), or a lowercase pi (pi)
+	public boolean isNumberOrPeriod(char input, String[][] variables)
 	{
-		return isDigit(input) || input == '.' || input == '€' || input == 'π';
+		return isDigit(input) || input == '.' || input == 'E' || input == 'π' || (Arrays.deepToString(variables).toLowerCase().contains((input + "").toLowerCase()));
 	}
 }

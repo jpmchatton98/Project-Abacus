@@ -8,15 +8,17 @@ public class Parser
 {
 	Utilities util = new Utilities();
 	final String[] functions = new String[]{"√", "∛", "Ł", "Ĺ", "Ä", "š", "Š", "Ŝ", "č", "Č", "Ċ", "ť", "Ť", "Ŧ", "ç", "ƈ", "Ç", "ţ", "ƭ", "Ţ", "ş", "ʂ", "Ş"};
+	private String[][] variables; //Contains a list of user-defined variables
 
 	// Core parsing function.  Accepts the equation string as an input and outputs the answer
 	// in the form of a double.
-	public double parse(String equation)
+	public double parse(String equation, String[][] variables)
 	{
+		this.variables = variables;
 		try
 		{
 			String lastFunction = null;
-			equation = util.prepareEquation(equation);
+			equation = util.prepareEquation(equation, this.variables);
 			ArrayList<EquationPart> equationParts = new ArrayList<>();
 
 			String number = "";
@@ -68,9 +70,9 @@ public class Parser
 					{
 						String p = equation.substring(pStart, pEnd + 1);
 						String pTrim = p.substring(1, p.length() - 1);
-						equation = equation.replace(p, parse(pTrim) + "");
+						equation = equation.replace(p, parse(pTrim, this.variables) + "");
 
-						if(util.isNumberOrPeriod(equation.charAt(pStart - 1)))
+						if(util.isNumberOrPeriod(equation.charAt(pStart - 1), this.variables))
 						{
 							equation = equation.substring(0, pStart) + "*" + equation.substring(pStart);
 						}
@@ -84,7 +86,7 @@ public class Parser
 					}
 				}
 
-				if (util.isNumberOrPeriod(equation.charAt(i)))
+				if (util.isNumberOrPeriod(equation.charAt(i), this.variables))
 				{
 					if (mode == 1)
 					{
@@ -228,14 +230,21 @@ public class Parser
 						equationPart.setNumber(Math.PI + "");
 						break;
 					}
-					case "€":
+					case "E":
 					{
 						equationPart.setNumber(Math.exp(1) + "");
 						break;
 					}
 					default:
 					{
-						System.out.println("Invalid constant");
+						for (String[] variable : variables)
+						{
+							if (equationPart.getNumberString().toLowerCase().equals(variable[0].toLowerCase()))
+							{
+								equationPart.setNumber(variable[1]);
+								break;
+							}
+						}
 						break;
 					}
 				}
@@ -255,9 +264,6 @@ public class Parser
 						String constant = equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1) + "";
 						equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
 
-						// Math.pi
-						// Math.exp(1)
-
 						switch(constant)
 						{
 							case "π":
@@ -265,14 +271,21 @@ public class Parser
 								constant = Math.PI + "";
 								break;
 							}
-							case "€":
+							case "E":
 							{
 								constant = Math.exp(1) + "";
 								break;
 							}
 							default:
 							{
-								System.out.println("Invalid constant");
+								for (String[] variable : variables)
+								{
+									if (constant.toLowerCase().equals(variable[0].toLowerCase()))
+									{
+										constant = variable[1];
+										break;
+									}
+								}
 								break;
 							}
 						}

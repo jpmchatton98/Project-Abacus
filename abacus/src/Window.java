@@ -1,7 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+
+import static java.lang.Double.NaN;
 
 // This class handles all of the UI functionality and contains the main() function
 public class Window
@@ -55,20 +59,34 @@ public class Window
 		equationInput = new JTextField();
 		equationInput.setFont(f);
 		equationInput.addActionListener(new equationListener());
+
 		c.gridx = 0;
 		c.gridy = HISTORY_LEN;
 		c.weightx = 1;
 		c.fill = 1;
+
 		window.add(equationInput, c);
 
 		// Initialize submit button and print it to the screen
 		// Submit button with a ˄ as its text
 		JButton submit = new JButton("˄");
 		submit.addActionListener(new equationListener());
+		submit.setBackground(new Color(16, 161, 0));
 		c.gridx = 1;
 		c.fill = 0;
 		c.weightx = 0;
 		window.add(submit, c);
+
+		JLabel readme = new JLabel("dwaiohfwa");
+		readme.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+		c.gridx = 0;
+		c.gridy++;
+		c.fill = 1;
+		c.weightx = 1;
+		c.gridwidth = 2;
+
+		window.add(readme, c);
 
 		JFrame frame = new JFrame("Project Abacus");
 		frame.setContentPane(window);
@@ -85,24 +103,32 @@ public class Window
 		{
 			String equation = equationInput.getText();
 
-			history.add(equation);
-			if(history.size() > HISTORY_LEN)
+			if(!Double.isNaN(parser.parse(equation)))
 			{
-				history.remove(0);
-			}
+				history.add(equation);
+				if(history.size() > HISTORY_LEN)
+				{
+					history.remove(0);
+				}
 
-			for(int i = 0, j = HISTORY_LEN - history.size(); j < HISTORY_LEN; i++, j++)
+				equationInput.setBackground(Color.WHITE);
+				for(int i = 0, j = HISTORY_LEN - history.size(); j < HISTORY_LEN; i++, j++)
+				{
+					if(i < history.size())
+					{
+						historyLabels[j].setText(history.get(i));
+						answerLabels[j].setText(parser.parse(historyLabels[j].getText()) + "");
+					}
+					else
+					{
+						historyLabels[j].setText("");
+						answerLabels[j].setText("");
+					}
+				}
+			}
+			else
 			{
-				if(i < history.size())
-				{
-					historyLabels[j].setText(history.get(i));
-					answerLabels[j].setText(parser.parse(historyLabels[j].getText()) + "");
-				}
-				else
-				{
-					historyLabels[j].setText("");
-					answerLabels[j].setText("");
-				}
+				equationInput.setBackground(new Color(255, 138, 138));
 			}
 		}
 	}

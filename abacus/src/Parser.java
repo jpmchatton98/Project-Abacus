@@ -7,7 +7,7 @@ import static java.lang.Double.NaN;
 public class Parser
 {
 	Utilities util = new Utilities();
-	final String[] functions = new String[]{"√", "∛", "Ł", "Ĺ", "Ä", "š", "Š", "Ŝ", "č", "Č", "Ċ", "ť", "Ť", "Ŧ", "ç", "ƈ", "Ç", "ţ", "ƭ", "Ţ", "ş", "ʂ", "Ş"};
+	final String[] functions = new String[]{"√", "∛", "Ł", "Ä", "š", "Š", "Ŝ", "č", "Č", "Ċ", "ť", "Ť", "Ŧ", "ç", "ƈ", "Ç", "ţ", "ƭ", "Ţ", "ş", "ʂ", "Ş", "Ȼ", "Ƒ", "Ř"};
 
 	// Core parsing function.  Accepts the equation string as an input and outputs the answer
 	// in the form of a double.
@@ -24,6 +24,7 @@ public class Parser
 			EquationPart curr;
 
 			boolean startingNegative = false;
+			boolean startingComplement = false;
 			int mode = 0; // 0: Number, 1: Function
 
 			for (int i = 0; i < equation.length(); i++)
@@ -33,20 +34,25 @@ public class Parser
 					startingNegative = true;
 					continue;
 				}
+				if (i == 0 && equation.charAt(i) == '~') // Starting Complement
+				{
+					startingComplement = true;
+					continue;
+				}
 
-				if(equation.charAt(i) == '(') // If equation contains an opening parenthesis
+				if (equation.charAt(i) == '(') // If equation contains an opening parenthesis
 				{
 					int pTally = 0; // Tally of parenthetic blocks, so that we don't match them up incorrectly
 					int pStart = i; // Starting index of the parentheses
 					int pEnd = 0; // Ending index of the parentheses
 
-					for(i = i + 1; i < equation.length(); i++)
+					for (i = i + 1; i < equation.length(); i++)
 					{
-						if(equation.charAt(i) == '(')
+						if (equation.charAt(i) == '(')
 						{
 							pTally++;
 						}
-						else if(equation.charAt(i) == ')')
+						else if (equation.charAt(i) == ')')
 						{
 							if (pTally == 0)
 							{
@@ -60,7 +66,7 @@ public class Parser
 						}
 					}
 
-					if(pTally != 0)
+					if (pTally != 0)
 					{
 						throw new NumberFormatException();
 					}
@@ -70,7 +76,7 @@ public class Parser
 						String pTrim = p.substring(1, p.length() - 1);
 						equation = equation.replace(p, parse(pTrim) + "");
 
-						if(util.isNumberOrPeriod(equation.charAt(pStart - 1)))
+						if (util.isNumberOrPeriod(equation.charAt(pStart - 1)))
 						{
 							equation = equation.substring(0, pStart) + "*" + equation.substring(pStart);
 						}
@@ -111,13 +117,31 @@ public class Parser
 						if (equationParts.size() > 0)
 						{
 							function = equationParts.get(equationParts.size() - 1).getFunction();
-							if(function.length() > 1)
+							if (function.length() > 1)
 							{
 								if (function.charAt(function.length() - 1) == '-')
 								{
 									equationParts.get(equationParts.size() - 1).setNumber("-" + number);
 									equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
 											.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+									if (equationParts.get(equationParts.size() - 1).getFunction().charAt(equationParts.get(equationParts.size() - 1).getFunction().length() - 1) == '~')
+									{
+										equationParts.get(equationParts.size() - 1).setNumber(~Integer.parseInt(equationParts.get(equationParts.size() - 1).getNumberString()) + "");
+										equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+												.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+									}
+								}
+								else if (function.charAt(function.length() - 1) == '~')
+								{
+									equationParts.get(equationParts.size() - 1).setNumber(~Integer.parseInt(number) + "");
+									equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+											.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+									if (equationParts.get(equationParts.size() - 1).getFunction().charAt(equationParts.get(equationParts.size() - 1).getFunction().length() - 1) == '-')
+									{
+										equationParts.get(equationParts.size() - 1).setNumber("-" + equationParts.get(equationParts.size() - 1).getNumberString());
+										equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+												.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+									}
 								}
 								else
 								{
@@ -135,8 +159,16 @@ public class Parser
 							if (startingNegative)
 							{
 								number = "-" + number;
+								equationParts.add(new EquationPart(number, "+"));
 							}
-							equationParts.add(new EquationPart(number, "+"));
+							else if (startingComplement)
+							{
+								equationParts.add(new EquationPart(~Integer.parseInt(number) + "", "+"));
+							}
+							else
+							{
+								equationParts.add(new EquationPart(number, "+"));
+							}
 						}
 						number = "";
 					}
@@ -146,15 +178,34 @@ public class Parser
 				}
 			}
 
-			if (equationParts.size() > 0)
+			if(lastFunction != null)
 			{
-				if(lastFunction.length() > 1)
+				if (lastFunction.length() > 1)
 				{
 					if (lastFunction.charAt(lastFunction.length() - 1) == '-')
 					{
 						equationParts.get(equationParts.size() - 1).setNumber("-" + number);
 						equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
 								.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+						if (equationParts.get(equationParts.size() - 1).getFunction().charAt(equationParts.get(equationParts.size() - 1).getFunction().length() - 1) == '~')
+						{
+							equationParts.get(equationParts.size() - 1).setNumber(~Integer.parseInt(equationParts.get(equationParts.size() - 1).getNumberString()) + "");
+							equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+									.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+						}
+					}
+					else if (lastFunction.charAt(lastFunction.length() - 1) == '~')
+					{
+						equationParts.get(equationParts.size() - 1).setNumber(~Integer.parseInt(number) + "");
+						equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+								.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+
+						if (equationParts.get(equationParts.size() - 1).getFunction().charAt(equationParts.get(equationParts.size() - 1).getFunction().length() - 1) == '-')
+						{
+							equationParts.get(equationParts.size() - 1).setNumber("-" + equationParts.get(equationParts.size() - 1).getNumberString());
+							equationParts.get(equationParts.size() - 1).setFunction(equationParts.get(equationParts.size() - 1).getFunction()
+									.substring(0, equationParts.get(equationParts.size() - 1).getFunction().length() - 1));
+						}
 					}
 					else
 					{
@@ -165,21 +216,17 @@ public class Parser
 				{
 					equationParts.get(equationParts.size() - 1).setNumber(number);
 				}
+
+				return compileEquation(equationParts);
 			}
 			else
 			{
-				if (startingNegative)
-				{
-					number = "-" + number;
-				}
-				return Double.parseDouble(number);
+				throw new NumberFormatException();
 			}
-
-			return compileEquation(equationParts);
 		}
 		catch(NumberFormatException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			return NaN;
 		}
 	}
@@ -294,28 +341,24 @@ public class Parser
 		parseConstants(equationParts);
 		completeFunctions(equationParts);
 
-		int index = 0;
+		int index = equationParts.size() - 1;
 		while(equationParts.size() > 1)
 		{
-			if(equationParts.get(index + 1).getFunction().equals("^"))
+			if(equationParts.get(index - 1).getFunction().equals("^"))
 			{
 				EquationPart part = equationParts.get(index);
-				EquationPart nextPart = equationParts.get(index + 1);
+				EquationPart nextPart = equationParts.get(index - 1);
 
 				double newNumber = util.compileFunction(part.getNumber(), nextPart.getNumber(), nextPart.getFunction());
 				EquationPart newPart = new EquationPart(newNumber + "", part.getFunction());
 
 				equationParts.remove(part);
 				equationParts.remove(nextPart);
-				equationParts.add(index, newPart);
-			}
-			else
-			{
-				index++;
+				equationParts.add(index - 1, newPart);
 			}
 
-
-			if(index >= equationParts.size() - 1)
+			index--;
+			if(index <= 0)
 			{
 				break;
 			}

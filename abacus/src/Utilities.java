@@ -1,3 +1,4 @@
+import static java.lang.Character.PARAGRAPH_SEPARATOR;
 import static java.lang.Character.isDigit;
 import static java.lang.Double.NaN;
 import static java.lang.Double.parseDouble;
@@ -22,6 +23,11 @@ public class Utilities
 		equation = equation.replace("logn", "Ł");
 		equation = equation.replace("log" , "Ĺ");
 		equation = equation.replace("abs" , "Ä");
+
+		// Rounding functions
+		equation = equation.replace("ceil", "Ȼ");
+		equation = equation.replace("flr", "Ƒ");
+		equation = equation.replace("rnd", "Ř");
 
 		// Trig Functions
 		equation = equation.replace("asin", "š");
@@ -77,14 +83,22 @@ public class Utilities
 			{
 				return num1 / num2;
 			}
+			case "%": // Modulus
+			{
+				return num1 % num2;
+			}
 
 			case "^": // Exponent
 			{
 				return Math.pow(num1, num2);
 			}
-			case "%": // Modulus
+			case "v": // Nth Root
 			{
-				return num1 % num2;
+				return Math.pow(num2, (1/num1));
+			}
+			case "Ĺ": // Nth Log
+			{
+				return Math.log(num2) / Math.log(num1);
 			}
 
 			case "&": // Binary AND
@@ -134,10 +148,6 @@ public class Utilities
 				return Math.abs(num);
 			}
 
-			case "Ĺ": // Log base 10
-			{
-				return Math.log10(num);
-			}
 			case "Ł": // Natural Log
 			{
 				return Math.log(num);
@@ -219,6 +229,19 @@ public class Utilities
 			case "ţ": // Arccotangent
 			{
 				return 1 / Math.atan(num);
+			}
+
+			case "Ȼ": // Ceiling
+			{
+				return Math.ceil(num);
+			}
+			case "Ƒ": // Floor
+			{
+				return Math.floor(num);
+			}
+			case "Ř": // Round
+			{
+				return Math.round(num);
 			}
 
 			default:

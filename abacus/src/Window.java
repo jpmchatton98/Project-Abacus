@@ -77,17 +77,6 @@ public class Window
 		c.weightx = 0;
 		window.add(submit, c);
 
-		JLabel readme = new JLabel("dwaiohfwa");
-		readme.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-		c.gridx = 0;
-		c.gridy++;
-		c.fill = 1;
-		c.weightx = 1;
-		c.gridwidth = 2;
-
-		window.add(readme, c);
-
 		JFrame frame = new JFrame("Project Abacus");
 		frame.setContentPane(window);
 

@@ -8,6 +8,7 @@ public class Parser
 {
 	Utilities util = new Utilities();
 	final String[] functions = new String[]{"√", "∛", "Ł", "Ä", "š", "Š", "Ŝ", "č", "Č", "Ċ", "ť", "Ť", "Ŧ", "ç", "ƈ", "Ç", "ţ", "ƭ", "Ţ", "ş", "ʂ", "Ş", "Ȼ", "Ƒ", "Ř"};
+	final String[] constants = {"π", "€", "ϕ", "ζ", "δ", "α", "γ", "λ", "Ќ", "Æ"};
 
 	// Core parsing function.  Accepts the equation string as an input and outputs the answer
 	// in the form of a double.
@@ -226,7 +227,7 @@ public class Parser
 		}
 		catch(NumberFormatException e)
 		{
-			//e.printStackTrace();
+			e.printStackTrace();
 			return NaN;
 		}
 	}
@@ -266,18 +267,58 @@ public class Parser
 
 		for(EquationPart equationPart : equationParts)
 		{
-			if(equationPart.getNumberString().equals("π") || equationPart.getNumberString().equals("€"))
+			if(Arrays.toString(constants).contains(equationPart.getNumberString()))
 			{
 				switch (equationPart.getNumberString())
 				{
-					case "π":
+					case "π": // Pi
 					{
 						equationPart.setNumber(Math.PI + "");
 						break;
 					}
-					case "€":
+					case "€": // Euler's Number
 					{
 						equationPart.setNumber(Math.exp(1) + "");
+						break;
+					}
+					case "ϕ": // Golden Ratio
+					{
+						equationPart.setNumber(2 * Math.sin((54 * Math.PI) / 180) + "");
+						break;
+					}
+					case "ζ": // Apery's Constant
+					{
+						equationPart.setNumber("1.202056903159594");
+						break;
+					}
+					case "α": // First Feigenbaum Constant
+					{
+						equationPart.setNumber("2.502907875095893");
+						break;
+					}
+					case "δ": // Second Feigenbaum Constant
+					{
+						equationPart.setNumber("4.669201609102990");
+						break;
+					}
+					case "γ": // Euler–Mascheroni Constant
+					{
+						equationPart.setNumber("0.577215664901533");
+						break;
+					}
+					case "λ": // Conway's Constant
+					{
+						equationPart.setNumber("1.303577269034296");
+						break;
+					}
+					case "Ќ": // Khinchin’s Constant
+					{
+						equationPart.setNumber("2.6854520010");
+						break;
+					}
+					case "Æ": // Glaisher–Kinkelin Constant
+					{
+						equationPart.setNumber("1.2824271291");
 						break;
 					}
 					default:
@@ -295,26 +336,63 @@ public class Parser
 			{
 				if(equationParts.get(i).getNumberString().length() > 1)
 				{
-					done = !((equationParts.get(i).getNumberString()).contains("π") || (equationParts.get(i).getNumberString()).contains("€"));
+					done = !(Arrays.toString(constants).contains(equationParts.get(i).getNumberString().charAt(0) + ""));
 
 					if (!done)
 					{
 						String constant = equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1) + "";
 						equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
 
-						// Math.pi
-						// Math.exp(1)
-
 						switch(constant)
 						{
-							case "π":
+							case "π": // Pi
 							{
 								constant = Math.PI + "";
 								break;
 							}
-							case "€":
+							case "€": // Euler's Number
 							{
 								constant = Math.exp(1) + "";
+								break;
+							}
+							case "ϕ": // Golden Ratio
+							{
+								constant = 2 * Math.sin((54 * Math.PI) / 180) + "";
+								break;
+							}
+							case "ζ": // Apery's Constant
+							{
+								constant = "1.202056903159594";
+								break;
+							}
+							case "α": // First Feigenbaum Constant
+							{
+								constant = "2.502907875095893";
+								break;
+							}
+							case "δ": // Second Feigenbaum Constant
+							{
+								constant = "4.669201609102990";
+								break;
+							}
+							case "γ": // Euler–Mascheroni Constant
+							{
+								constant = "0.577215664901533";
+								break;
+							}
+							case "λ": // Conway's Constant
+							{
+								constant = "1.303577269034296";
+								break;
+							}
+							case "Ќ": // Khinchin’s Constant
+							{
+								constant = "2.6854520010";
+								break;
+							}
+							case "Æ": // Glaisher–Kinkelin Constant
+							{
+								constant = "1.2824271291";
 								break;
 							}
 							default:

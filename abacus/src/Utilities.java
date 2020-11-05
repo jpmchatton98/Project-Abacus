@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 import static java.lang.Character.PARAGRAPH_SEPARATOR;
 import static java.lang.Character.isDigit;
 import static java.lang.Double.NaN;
@@ -5,6 +7,8 @@ import static java.lang.Double.parseDouble;
 
 public class Utilities
 {
+	final String[] constants = {"π", "€", "ϕ", "ζ", "δ", "α", "γ", "λ", "Ќ", "Æ"};
+
 	// Prepares the equation for parsing by trimming out spaces and replacing multi-character
 	// functions with single characters.
 	public String prepareEquation(String equation)
@@ -57,6 +61,14 @@ public class Utilities
 		// Constants
 		equation = equation.replace("pi"  , "π");
 		equation = equation.replace("e"   , "€");
+		equation = equation.replace("gr"  , "ϕ");
+		equation = equation.replace("ap"  , "ζ");
+		equation = equation.replace("fcd" , "δ");
+		equation = equation.replace("fca" , "α");
+		equation = equation.replace("em"  , "γ");
+		equation = equation.replace("cc"  , "λ");
+		equation = equation.replace("kc"  , "Ќ");
+		equation = equation.replace("gk"  , "Æ");
 
 		equation = "0+" + equation;
 
@@ -255,6 +267,6 @@ public class Utilities
 	// Returns true if the functions finds a digit, a period, a euro symbol (euler's number), or a lowercase pi (pi)
 	public boolean isNumberOrPeriod(char input)
 	{
-		return isDigit(input) || input == '.' || input == '€' || input == 'π';
+		return isDigit(input) || input == '.' || Arrays.toString(constants).contains(input + "");
 	}
 }

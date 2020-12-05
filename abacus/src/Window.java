@@ -1,29 +1,22 @@
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
-
-import static java.lang.Double.NaN;
-import static java.lang.Double.parseDouble;
 
 // This class handles all of the UI functionality and contains the main() function
 public class Window
 {
 	private static final int HISTORY_LEN = 10; // Constant for length of the visible history
-
-	private static JTextField equationInput; // Equation input text field
-
-	private static JLabel[] historyLabels; // Array of all history labels
-	private static JLabel[] answerLabels; // Array of all answer labels
-
-	private static JTextField[] variableNameInputs; // Array of all variable name input boxes
-	private static JTextField[] variableValueInputs; // Array of all variable value input boxes
-
 	public static ArrayList<String> history; // ArrayList containing raw historical equations in string form
 	public static ArrayList<Variable> variables;
-
+	private static JTextField equationInput; // Equation input text field
+	private static JLabel[] historyLabels; // Array of all history labels
+	private static JLabel[] answerLabels; // Array of all answer labels
+	private static JTextField[] variableNameInputs; // Array of all variable name input boxes
+	private static JTextField[] variableValueInputs; // Array of all variable value input boxes
 	private static Parser parser;
 
 	public static void main(String[] args)
@@ -50,12 +43,15 @@ public class Window
 		c.fill = 1;
 
 		c.gridx = 0;
+		c.weightx = 0;
 		JLabel varName = new JLabel("Variable Names");
 		window.add(varName, c);
 
 		c.gridx = 1;
 		JLabel varVal = new JLabel("Variable Values");
 		window.add(varVal, c);
+
+		c.weightx = 1;
 
 		historyLabels[0] = new JLabel("", SwingConstants.LEFT);
 		historyLabels[0].addMouseListener(new historyFill());
@@ -70,7 +66,7 @@ public class Window
 		window.add(answerLabels[0], c);
 
 		// Initialize all history and answer labels and print them to the screen
-		for(int i = 1; i < HISTORY_LEN; i++)
+		for (int i = 1; i < HISTORY_LEN; i++)
 		{
 			c.weighty = 1;
 			c.weightx = 1;
@@ -78,12 +74,15 @@ public class Window
 			c.fill = 1;
 
 			c.gridx = 0;
+			c.weightx = 0;
 			variableNameInputs[i] = new JTextField();
 			window.add(variableNameInputs[i], c);
 
 			c.gridx = 1;
 			variableValueInputs[i] = new JTextField();
 			window.add(variableValueInputs[i], c);
+
+			c.weightx = 1;
 
 			historyLabels[i] = new JLabel("", SwingConstants.LEFT);
 			historyLabels[i].addMouseListener(new historyFill());
@@ -138,9 +137,9 @@ public class Window
 			String equation = equationInput.getText();
 			variables.clear();
 
-			for(int i = 1; i < HISTORY_LEN; i++)
+			for (int i = 1; i < HISTORY_LEN; i++)
 			{
-				if(variableNameInputs[i].getText() != null)
+				if (variableNameInputs[i].getText() != null)
 				{
 					if (variableNameInputs[i].getText().trim().length() != 0)
 					{
@@ -149,21 +148,21 @@ public class Window
 				}
 			}
 
-			if(!Double.isNaN(parser.parse(equation, variables)))
+			if (!Double.isNaN(parser.parse(equation, variables)))
 			{
 				history.add(equation);
-				if(history.size() > HISTORY_LEN)
+				if (history.size() > HISTORY_LEN)
 				{
 					history.remove(0);
 				}
 
 				equationInput.setBackground(Color.WHITE);
-				for(int i = 0, j = HISTORY_LEN - history.size(); j < HISTORY_LEN; i++, j++)
+				for (int i = 0, j = HISTORY_LEN - history.size(); j < HISTORY_LEN; i++, j++)
 				{
-					if(i < history.size())
+					if (i < history.size())
 					{
 						historyLabels[j].setText(history.get(i));
-						answerLabels[j].setText(parser.parse(historyLabels[j].getText(), variables) + "");
+						answerLabels[j].setText(String.format("%.5f", parser.parse(historyLabels[j].getText(), variables)));
 					}
 					else
 					{
@@ -188,9 +187,20 @@ public class Window
 			equationInput.setText(source.getText());
 		}
 
-		public void mousePressed(MouseEvent e){}
-		public void mouseReleased(MouseEvent e){}
-		public void mouseEntered(MouseEvent e){}
-		public void mouseExited(MouseEvent e){}
+		public void mousePressed(MouseEvent e)
+		{
+		}
+
+		public void mouseReleased(MouseEvent e)
+		{
+		}
+
+		public void mouseEntered(MouseEvent e)
+		{
+		}
+
+		public void mouseExited(MouseEvent e)
+		{
+		}
 	}
 }

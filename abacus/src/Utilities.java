@@ -1,33 +1,36 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static java.lang.Character.PARAGRAPH_SEPARATOR;
 import static java.lang.Character.isDigit;
 import static java.lang.Double.NaN;
-import static java.lang.Double.parseDouble;
 
 public class Utilities
 {
 	final String[] constants = {"π", "€", "ϕ", "ζ", "δ", "α", "γ", "λ", "Ќ", "Æ"};
+	private boolean firstEquation = true;
 
 	// Prepares the equation for parsing by trimming out spaces and replacing multi-character
 	// functions with single characters.
 	public String prepareEquation(String equation)
 	{
 		equation = equation.replace(" ", "");
-		equation = equation.toLowerCase();
+		if (firstEquation)
+		{
+			equation = equation.toLowerCase();
+			firstEquation = false;
+		}
 
 		// Binary Equations
-		equation = equation.replace("<<"  , "<");
-		equation = equation.replace(">>"  , ">");
-		equation = equation.replace("xor" , "⊕");
+		equation = equation.replace("<<", "<");
+		equation = equation.replace(">>", ">");
+		equation = equation.replace("xor", "⊕");
 
 		// Basic Functions (roots, logs, and absolute value)
 		equation = equation.replace("sqrt", "√");
 		equation = equation.replace("cbrt", "∛");
 		equation = equation.replace("logn", "Ł");
-		equation = equation.replace("log" , "Ĺ");
-		equation = equation.replace("abs" , "Ä");
+		equation = equation.replace("log", "Ĺ");
+		equation = equation.replace("abs", "Ä");
 
 		// Rounding functions
 		equation = equation.replace("ceil", "Ȼ");
@@ -37,39 +40,39 @@ public class Utilities
 		// Trig Functions
 		equation = equation.replace("asin", "š");
 		equation = equation.replace("sinh", "Š");
-		equation = equation.replace("sin" , "Ŝ");
+		equation = equation.replace("sin", "Ŝ");
 
 		equation = equation.replace("acos", "č");
 		equation = equation.replace("cosh", "Č");
-		equation = equation.replace("cos" , "Ċ");
+		equation = equation.replace("cos", "Ċ");
 
 		equation = equation.replace("atan", "ť");
 		equation = equation.replace("tanh", "Ť");
-		equation = equation.replace("tan" , "Ŧ");
+		equation = equation.replace("tan", "Ŧ");
 
 		equation = equation.replace("acsc", "ç");
 		equation = equation.replace("csch", "ƈ");
-		equation = equation.replace("csc" , "Ç");
+		equation = equation.replace("csc", "Ç");
 
 		equation = equation.replace("acot", "ţ");
 		equation = equation.replace("coth", "ƭ");
-		equation = equation.replace("cot" , "Ţ");
+		equation = equation.replace("cot", "Ţ");
 
 		equation = equation.replace("asec", "ş");
 		equation = equation.replace("sech", "ʂ");
-		equation = equation.replace("sec" , "Ş");
+		equation = equation.replace("sec", "Ş");
 
 		// Constants
-		equation = equation.replace("pi"  , "π");
-		equation = equation.replace("en"  , "€");
-		equation = equation.replace("gr"  , "ϕ");
-		equation = equation.replace("ap"  , "ζ");
-		equation = equation.replace("fcd" , "δ");
-		equation = equation.replace("fca" , "α");
-		equation = equation.replace("em"  , "γ");
-		equation = equation.replace("cc"  , "λ");
-		equation = equation.replace("kc"  , "Ќ");
-		equation = equation.replace("gk"  , "Æ");
+		equation = equation.replace("pi", "π");
+		equation = equation.replace("en", "€");
+		equation = equation.replace("gr", "ϕ");
+		equation = equation.replace("ap", "ζ");
+		equation = equation.replace("fcd", "δ");
+		equation = equation.replace("fca", "α");
+		equation = equation.replace("em", "γ");
+		equation = equation.replace("cc", "λ");
+		equation = equation.replace("kc", "Ќ");
+		equation = equation.replace("gk", "Æ");
 
 		equation = "0+" + equation;
 
@@ -78,7 +81,7 @@ public class Utilities
 
 	public double compileFunction(double num1, double num2, String function)
 	{
-		switch(function)
+		switch (function)
 		{
 			case "+": // Addition
 			{
@@ -107,7 +110,7 @@ public class Utilities
 			}
 			case "v": // Nth Root
 			{
-				return Math.pow(num2, (1/num1));
+				return Math.pow(num2, (1 / num1));
 			}
 			case "Ĺ": // Nth Log
 			{
@@ -145,7 +148,7 @@ public class Utilities
 
 	public double completeFunction(double num, String function)
 	{
-		switch(function)
+		switch (function)
 		{
 			case "√": // Square Root
 			{
@@ -282,11 +285,12 @@ public class Utilities
 		}
 		return false;
 	}
+
 	public boolean contVariable(String input, ArrayList<Variable> variables)
 	{
-		for(int i = 0; i < input.length(); i++)
+		for (int i = 0; i < input.length(); i++)
 		{
-			if(isVariable(input.charAt(i), variables))
+			if (isVariable(input.charAt(i), variables))
 			{
 				return true;
 			}

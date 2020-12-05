@@ -6,10 +6,9 @@ import static java.lang.Double.NaN;
 // This class contains code for the core parsing algorithm
 public class Parser
 {
-	Utilities util = new Utilities();
 	final String[] functions = new String[]{"√", "∛", "Ł", "Ä", "š", "Š", "Ŝ", "č", "Č", "Ċ", "ť", "Ť", "Ŧ", "ç", "ƈ", "Ç", "ţ", "ƭ", "Ţ", "ş", "ʂ", "Ş", "Ȼ", "Ƒ", "Ř"};
 	final String[] constants = {"π", "€", "ϕ", "ζ", "δ", "α", "γ", "λ", "Ќ", "Æ"};
-
+	final Utilities util = new Utilities();
 	private ArrayList<Variable> variables;
 
 	// Core parsing function.  Accepts the equation string as an input and outputs the answer
@@ -80,6 +79,7 @@ public class Parser
 						String p = equation.substring(pStart, pEnd + 1);
 						String pTrim = p.substring(1, p.length() - 1);
 						equation = equation.replace(p, parse(pTrim, variables) + "");
+						System.out.println(equation);
 
 						if (util.isNumberOrPeriod(equation.charAt(pStart - 1), variables))
 						{
@@ -183,7 +183,7 @@ public class Parser
 				}
 			}
 
-			if(lastFunction != null)
+			if (lastFunction != null)
 			{
 				if (lastFunction.length() > 1)
 				{
@@ -229,7 +229,7 @@ public class Parser
 				throw new NumberFormatException();
 			}
 		}
-		catch(NumberFormatException e)
+		catch (NumberFormatException e)
 		{
 			e.printStackTrace();
 			return NaN;
@@ -255,7 +255,7 @@ public class Parser
 				}
 				else
 				{
-					if(Arrays.toString(functions).contains(equationPart.getFunction())) //Checks to see if the equationpart function is 1 character, but that character is a recognized function
+					if (Arrays.toString(functions).contains(equationPart.getFunction())) //Checks to see if the equationpart function is 1 character, but that character is a recognized function
 					{
 						equationPart.setNumber(util.completeFunction(equationPart.getNumber(), equationPart.getFunction()) + "");
 						equationPart.setFunction("*");
@@ -269,9 +269,9 @@ public class Parser
 	{
 		boolean done = false;
 
-		for(EquationPart equationPart : equationParts)
+		for (EquationPart equationPart : equationParts)
 		{
-			if(Arrays.toString(constants).contains(equationPart.getNumberString()))
+			if (Arrays.toString(constants).contains(equationPart.getNumberString()))
 			{
 				switch (equationPart.getNumberString())
 				{
@@ -332,7 +332,7 @@ public class Parser
 					}
 				}
 			}
-			else if(util.isVariable(equationPart.getNumberString().charAt(0), variables))
+			else if (util.isVariable(equationPart.getNumberString().charAt(0), variables))
 			{
 				String val = "";
 				for (Variable variable : variables)
@@ -351,15 +351,14 @@ public class Parser
 		{
 			for (int i = 0; i < equationParts.size(); i++)
 			{
-				if(equationParts.get(i).getNumberString().length() > 1)
+				if (equationParts.get(i).getNumberString().length() > 1)
 				{
 					done = !(Arrays.toString(constants).contains(equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1) + "") || util.contVariable(equationParts.get(i).getNumberString(), variables));
-					System.out.println("test");
 					if (!done)
 					{
 						String constant = equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1) + "";
 
-						switch(constant)
+						switch (constant)
 						{
 							case "π": // Pi
 							{
@@ -458,7 +457,7 @@ public class Parser
 						}
 
 						String val = "";
-						if(util.contVariable(equationParts.get(i).getNumberString(), variables))
+						if (util.contVariable(equationParts.get(i).getNumberString(), variables))
 						{
 							for (Variable variable : variables)
 							{
@@ -488,12 +487,12 @@ public class Parser
 		parseConstants(equationParts);
 		completeFunctions(equationParts);
 
-		int index = equationParts.size() - 1;
-		while(equationParts.size() > 1)
+		int index = equationParts.size();
+		while (equationParts.size() > 1)
 		{
-			if(equationParts.get(index - 1).getFunction().equals("^"))
+			if (equationParts.get(index - 1).getFunction().equals("^"))
 			{
-				EquationPart part = equationParts.get(index);
+				EquationPart part = equationParts.get(index - 2);
 				EquationPart nextPart = equationParts.get(index - 1);
 
 				double newNumber = util.compileFunction(part.getNumber(), nextPart.getNumber(), nextPart.getFunction());
@@ -501,20 +500,20 @@ public class Parser
 
 				equationParts.remove(part);
 				equationParts.remove(nextPart);
-				equationParts.add(index - 1, newPart);
+				equationParts.add(index - 2, newPart);
 			}
 
 			index--;
-			if(index <= 0)
+			if (index <= 0)
 			{
 				break;
 			}
 		}
 
 		index = 0;
-		while(equationParts.size() > 1)
+		while (equationParts.size() > 1)
 		{
-			if(equationParts.get(index + 1).getFunction().equals("*") || equationParts.get(index + 1).getFunction().equals("/") || equationParts.get(index + 1).getFunction().equals("%"))
+			if (equationParts.get(index + 1).getFunction().equals("*") || equationParts.get(index + 1).getFunction().equals("/") || equationParts.get(index + 1).getFunction().equals("%"))
 			{
 				EquationPart part = equationParts.get(index);
 				EquationPart nextPart = equationParts.get(index + 1);
@@ -531,14 +530,14 @@ public class Parser
 				index++;
 			}
 
-			if(index >= equationParts.size() - 1)
+			if (index >= equationParts.size() - 1)
 			{
 				break;
 			}
 		}
 
 		index = 0;
-		while(equationParts.size() > 1)
+		while (equationParts.size() > 1)
 		{
 			EquationPart part = equationParts.get(index);
 			EquationPart nextPart = equationParts.get(index + 1);

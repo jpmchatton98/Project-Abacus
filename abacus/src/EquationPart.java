@@ -9,6 +9,7 @@ public class EquationPart
 	{
 		this.function = function;
 	}
+
 	EquationPart(String number, String function)
 	{
 		this.number = number;
@@ -19,16 +20,22 @@ public class EquationPart
 	{
 		return parseDouble(number);
 	}
-	public String getNumberString() { return number; }
+
 	public void setNumber(String number)
 	{
 		this.number = number;
+	}
+
+	public String getNumberString()
+	{
+		return number;
 	}
 
 	public String getFunction()
 	{
 		return function;
 	}
+
 	public void setFunction(String function)
 	{
 		this.function = function;

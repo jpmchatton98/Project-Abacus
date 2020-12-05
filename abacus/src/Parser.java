@@ -10,10 +10,14 @@ public class Parser
 	final String[] functions = new String[]{"√", "∛", "Ł", "Ä", "š", "Š", "Ŝ", "č", "Č", "Ċ", "ť", "Ť", "Ŧ", "ç", "ƈ", "Ç", "ţ", "ƭ", "Ţ", "ş", "ʂ", "Ş", "Ȼ", "Ƒ", "Ř"};
 	final String[] constants = {"π", "€", "ϕ", "ζ", "δ", "α", "γ", "λ", "Ќ", "Æ"};
 
+	private ArrayList<Variable> variables;
+
 	// Core parsing function.  Accepts the equation string as an input and outputs the answer
 	// in the form of a double.
-	public double parse(String equation)
+	public double parse(String equation, ArrayList<Variable> var)
 	{
+		variables = var;
+
 		try
 		{
 			String lastFunction = null;
@@ -75,9 +79,9 @@ public class Parser
 					{
 						String p = equation.substring(pStart, pEnd + 1);
 						String pTrim = p.substring(1, p.length() - 1);
-						equation = equation.replace(p, parse(pTrim) + "");
+						equation = equation.replace(p, parse(pTrim, variables) + "");
 
-						if (util.isNumberOrPeriod(equation.charAt(pStart - 1)))
+						if (util.isNumberOrPeriod(equation.charAt(pStart - 1), variables))
 						{
 							equation = equation.substring(0, pStart) + "*" + equation.substring(pStart);
 						}
@@ -91,7 +95,7 @@ public class Parser
 					}
 				}
 
-				if (util.isNumberOrPeriod(equation.charAt(i)))
+				if (util.isNumberOrPeriod(equation.charAt(i), variables))
 				{
 					if (mode == 1)
 					{
@@ -328,6 +332,19 @@ public class Parser
 					}
 				}
 			}
+			else if(util.isVariable(equationPart.getNumberString().charAt(0), variables))
+			{
+				String val = "";
+				for (Variable variable : variables)
+				{
+					if (variable.getName() == equationPart.getNumberString().charAt(0))
+					{
+						val = variable.getValue() + "";
+						break;
+					}
+				}
+				equationPart.setNumber(val);
+			}
 		}
 
 		while (!done)
@@ -336,74 +353,126 @@ public class Parser
 			{
 				if(equationParts.get(i).getNumberString().length() > 1)
 				{
-					done = !(Arrays.toString(constants).contains(equationParts.get(i).getNumberString().charAt(0) + ""));
-
+					done = !(Arrays.toString(constants).contains(equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1) + "") || util.contVariable(equationParts.get(i).getNumberString(), variables));
+					System.out.println("test");
 					if (!done)
 					{
 						String constant = equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1) + "";
-						equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
 
 						switch(constant)
 						{
 							case "π": // Pi
 							{
 								constant = Math.PI + "";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "€": // Euler's Number
 							{
 								constant = Math.exp(1) + "";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "ϕ": // Golden Ratio
 							{
 								constant = 2 * Math.sin((54 * Math.PI) / 180) + "";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "ζ": // Apery's Constant
 							{
 								constant = "1.202056903159594";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "α": // First Feigenbaum Constant
 							{
 								constant = "2.502907875095893";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "δ": // Second Feigenbaum Constant
 							{
 								constant = "4.669201609102990";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "γ": // Euler–Mascheroni Constant
 							{
 								constant = "0.577215664901533";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "λ": // Conway's Constant
 							{
 								constant = "1.303577269034296";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "Ќ": // Khinchin’s Constant
 							{
 								constant = "2.6854520010";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							case "Æ": // Glaisher–Kinkelin Constant
 							{
 								constant = "1.2824271291";
+								equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+
+								EquationPart newPart = new EquationPart(constant, "*");
+								equationParts.add(i + 1, newPart);
 								break;
 							}
 							default:
 							{
-								System.out.println("Invalid constant");
 								break;
 							}
 						}
 
-						EquationPart newPart = new EquationPart(constant, "*");
-						equationParts.add(i + 1, newPart);
+						String val = "";
+						if(util.contVariable(equationParts.get(i).getNumberString(), variables))
+						{
+							for (Variable variable : variables)
+							{
+								if (variable.getName() == equationParts.get(i).getNumberString().charAt(equationParts.get(i).getNumberString().length() - 1))
+								{
+									equationParts.get(i).setNumber(equationParts.get(i).getNumberString().substring(0, equationParts.get(i).getNumberString().length() - 1));
+									val = variable.getValue() + "";
+									break;
+								}
+							}
+
+							EquationPart newPart = new EquationPart(val, "*");
+							equationParts.add(i + 1, newPart);
+						}
 					}
 				}
 				else

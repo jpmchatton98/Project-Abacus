@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static java.lang.Character.PARAGRAPH_SEPARATOR;
@@ -60,7 +61,7 @@ public class Utilities
 
 		// Constants
 		equation = equation.replace("pi"  , "π");
-		equation = equation.replace("e"   , "€");
+		equation = equation.replace("en"  , "€");
 		equation = equation.replace("gr"  , "ϕ");
 		equation = equation.replace("ap"  , "ζ");
 		equation = equation.replace("fcd" , "δ");
@@ -265,8 +266,31 @@ public class Utilities
 	}
 
 	// Returns true if the functions finds a digit, a period, a euro symbol (euler's number), or a lowercase pi (pi)
-	public boolean isNumberOrPeriod(char input)
+	public boolean isNumberOrPeriod(char input, ArrayList<Variable> variables)
 	{
-		return isDigit(input) || input == '.' || Arrays.toString(constants).contains(input + "");
+		return isDigit(input) || input == '.' || Arrays.toString(constants).contains(input + "") || isVariable(input, variables);
+	}
+
+	public boolean isVariable(char input, ArrayList<Variable> variables)
+	{
+		for (Variable variable : variables)
+		{
+			if (input == variable.getName())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean contVariable(String input, ArrayList<Variable> variables)
+	{
+		for(int i = 0; i < input.length(); i++)
+		{
+			if(isVariable(input.charAt(i), variables))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
